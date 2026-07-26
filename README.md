@@ -1,4 +1,4 @@
-# buildex
+# BuildEX
 
 A new Flutter project.
 
