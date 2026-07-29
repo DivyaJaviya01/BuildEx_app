@@ -35,9 +35,9 @@ sequenceDiagram
 
 ---
 
-## 2. Material Needs Request & status update to "Arriving"
+## 2. Material Consumption & Low Stock Alert
 
-This diagram shows how a material request from the Contractor goes to the Builder, gets approved, and is updated on the Contractor's phone.
+This diagram shows how the Contractor logs material consumption, how stock is deducted, and how the Builder receives a low-stock alert.
 
 ```mermaid
 sequenceDiagram
@@ -48,25 +48,21 @@ sequenceDiagram
     participant B_UI as 💻 Builder Dashboard
     actor Builder as 👑 Builder
 
-    Contractor->>C_UI: Submit Material Request (e.g. 100 bags cement)
-    C_UI->>DB: Create Request: status = "PENDING"
+    Contractor->>C_UI: Log Material Consumption (e.g. 10 bags cement)
+    C_UI->>DB: Save usage & deduct from stock
     activate DB
-    DB-->>B_UI: Push new pending request to dashboard
+    Note over DB: remaining = initial - sum(consumption)
+    DB-->>B_UI: Push updated stock levels
     deactivate DB
     activate B_UI
-    B_UI-->>Builder: Highlight request on panel
+    B_UI-->>Builder: Display remaining stock (e.g. "5 bags left")
     deactivate B_UI
     
-    Builder->>B_UI: Click "Mark Arriving" & enter delivery date
+    Note over DB: Check if remaining < threshold
+    DB-->>B_UI: Push low-stock alert if triggered
     activate B_UI
-    B_UI->>DB: Update Request: status = "ARRIVING", expected_date = Date
+    B_UI-->>Builder: Alert: "Cement running low - reorder soon"
     deactivate B_UI
-    activate DB
-    DB-->>C_UI: Push real-time status update
-    deactivate DB
-    activate C_UI
-    C_UI-->>Contractor: Display status: "Arriving on Wednesday"
-    deactivate C_UI
 ```
 
 ---

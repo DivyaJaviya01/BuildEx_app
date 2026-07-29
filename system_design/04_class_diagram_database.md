@@ -25,6 +25,7 @@ erDiagram
         string builder_id FK "References USERS(user_id)"
         string contractor_id FK "References USERS(user_id)"
         float overall_progress
+        decimal allocated_budget "Total project budget"
         date start_date
         date end_date
         datetime created_at
@@ -48,17 +49,14 @@ erDiagram
         string completed_by_id FK "References USERS(user_id)"
     }
 
-    MATERIAL_REQUESTS {
-        string request_id PK
+    MATERIAL_STOCK {
+        string stock_id PK
         string project_id FK "References PROJECTS(project_id)"
-        string contractor_id FK "References USERS(user_id)"
         string material_name
-        float requested_quantity
+        float initial_quantity
+        float remaining_quantity
         string unit
-        string status "PENDING | ARRIVING | DELIVERED"
-        date requested_date
-        date expected_arrival_date
-        datetime updated_at
+        date recorded_date
     }
 
     DAILY_LOGS {
@@ -67,7 +65,6 @@ erDiagram
         string contractor_id FK "References USERS(user_id)"
         date log_date
         string notes
-        int labor_count
         float machinery_hours
         datetime created_at
     }
@@ -75,9 +72,18 @@ erDiagram
     DAILY_MATERIAL_USAGES {
         string usage_id PK
         string log_id FK "References DAILY_LOGS(log_id)"
+        string stock_id FK "References MATERIAL_STOCK(stock_id)"
         string material_name
         float quantity_used
         string unit
+    }
+
+    DAILY_ATTENDANCE {
+        string attendance_id PK
+        string log_id FK "References DAILY_LOGS(log_id)"
+        string worker_name
+        decimal daily_wage
+        boolean is_present
     }
 
     SITE_ISSUES {
@@ -99,9 +105,11 @@ erDiagram
     USERS ||--o{ PROJECTS : "manages/executes"
     PROJECTS ||--|{ PHASES : contains
     PHASES ||--|{ SUB_PHASE : contains
-    PROJECTS ||--o{ MATERIAL_REQUESTS : orders
+    PROJECTS ||--o{ MATERIAL_STOCK : "tracks inventory"
     PROJECTS ||--o{ DAILY_LOGS : records
     DAILY_LOGS ||--|{ DAILY_MATERIAL_USAGES : contains
+    DAILY_LOGS ||--|{ DAILY_ATTENDANCE : contains
+    MATERIAL_STOCK ||--o{ DAILY_MATERIAL_USAGES : "deducts from"
     PROJECTS ||--o{ SITE_ISSUES : reports
 ```
 
@@ -136,6 +144,7 @@ Represents construction project sites financed by a Builder and executed by a Co
 | `contractor_id`| VARCHAR(36) | **FK** -> `users(user_id)` | The Contractor executing the project. |
 | `overall_progress`| DECIMAL(5,2)| DEFAULT 0.00 | Overall completion percentage (0.00 to 100.00). |
 | `start_date` | DATE | NOT NULL | Estimated or actual start date. |
+| `allocated_budget`| DECIMAL(12,2)| DEFAULT 0.00 | Total project budget allocated by Builder. |
 | `end_date` | DATE | NOT NULL | Target completion date. |
 | `created_at` | DATETIME | NOT NULL | Record creation date. |
 
@@ -171,22 +180,19 @@ Represents individual tasks under a Phase (e.g., Area Inspection). Completing th
 
 ---
 
-### 5. `material_requests` Table
-Tracks requests for materials initiated by the Contractor and fulfilled/marked "Arriving" by the Builder.
-* **Dependencies:** Depends on `projects` and `users` tables.
+### 5. `material_stock` Table
+Tracks initial material stock delivered to the project site. Consumption is deducted via `daily_material_usages` to calculate remaining quantity.
+* **Dependencies:** Depends on `projects` table.
 
 | Column Name | Data Type | Key / Constraint | Description |
 | :--- | :--- | :---: | :--- |
-| `request_id` | VARCHAR(36) | **PK** | Unique identifier (UUID). |
+| `stock_id` | VARCHAR(36) | **PK** | Unique identifier (UUID). |
 | `project_id` | VARCHAR(36) | **FK** -> `projects(project_id)` | Target project site. |
-| `contractor_id` | VARCHAR(36) | **FK** -> `users(user_id)` | Contractor who raised the request. |
 | `material_name` | VARCHAR(100) | NOT NULL | Name/type of material (e.g., "OPC Cement"). |
-| `requested_quantity`| DECIMAL(10,2)| NOT NULL | Quantity requested. |
+| `initial_quantity`| DECIMAL(10,2)| NOT NULL | Quantity delivered to site. |
+| `remaining_quantity`| DECIMAL(10,2)| NOT NULL | Auto-calculated: initial - sum(consumption). |
 | `unit` | VARCHAR(20) | NOT NULL | Unit of measure (e.g., "bags", "tons"). |
-| `status` | VARCHAR(20) | CHECK (status IN ('PENDING', 'ARRIVING', 'DELIVERED')) | Current state of request. |
-| `requested_date` | DATE | NOT NULL | Date the request was submitted. |
-| `expected_arrival_date`| DATE | NULLABLE | Estimated delivery date updated by Builder. |
-| `updated_at` | DATETIME | NOT NULL | Last modification timestamp. |
+| `recorded_date` | DATE | NOT NULL | Date the stock was recorded. |
 
 ---
 
@@ -201,27 +207,41 @@ Primary Daily Progress Report (DPR) header containing site parameters.
 | `contractor_id` | VARCHAR(36) | **FK** -> `users(user_id)` | Contractor submitting the log. |
 | `log_date` | DATE | NOT NULL | Calendar date of operations. |
 | `notes` | TEXT | NULLABLE | Text progress summary/notes. |
-| `labor_count` | INT | DEFAULT 0 | Total labor headcount present. |
 | `machinery_hours`| DECIMAL(5,2)| DEFAULT 0.00 | Total machine run-hours log. |
 | `created_at` | DATETIME | NOT NULL | Entry timestamp. |
 
 ---
 
 ### 7. `daily_material_usages` Table
-Tracks exact material quantities consumed on-site daily, attached to a `daily_logs` entry.
-* **Dependencies:** Depends on `daily_logs` table (Cascades on delete).
+Tracks exact material quantities consumed on-site daily, attached to a `daily_logs` entry. Each usage is linked to a `material_stock` record to auto-deduct remaining quantity.
+* **Dependencies:** Depends on `daily_logs` and `material_stock` tables.
 
 | Column Name | Data Type | Key / Constraint | Description |
 | :--- | :--- | :---: | :--- |
 | `usage_id` | VARCHAR(36) | **PK** | Unique identifier (UUID). |
 | `log_id` | VARCHAR(36) | **FK** -> `daily_logs(log_id)` ON DELETE CASCADE | Parent daily log entry. |
+| `stock_id` | VARCHAR(36) | **FK** -> `material_stock(stock_id)` | Links to stock record for auto-deduction. |
 | `material_name` | VARCHAR(100) | NOT NULL | Material consumed (e.g., "Sand"). |
 | `quantity_used` | DECIMAL(10,2)| NOT NULL | Quantity used today. |
 | `unit` | VARCHAR(20) | NOT NULL | Unit of measure. |
 
 ---
 
-### 8. `site_issues` Table
+### 8. `daily_attendance` Table
+Tracks daily worker attendance with wage information. Contractors add workers per day with their daily wage and mark present/absent.
+* **Dependencies:** Depends on `daily_logs` table.
+
+| Column Name | Data Type | Key / Constraint | Description |
+| :--- | :--- | :---: | :--- |
+| `attendance_id` | VARCHAR(36) | **PK** | Unique identifier (UUID). |
+| `log_id` | VARCHAR(36) | **FK** -> `daily_logs(log_id)` ON DELETE CASCADE | Parent daily log entry. |
+| `worker_name` | VARCHAR(100) | NOT NULL | Name of the worker. |
+| `daily_wage` | DECIMAL(10,2) | NOT NULL | Wage for this worker per day (INR). |
+| `is_present` | BOOLEAN | DEFAULT FALSE | Present or Absent. |
+
+---
+
+### 9. `site_issues` Table
 Tracks quality defects, blockages, or safety issues reported by either role.
 * **Dependencies:** Depends on `projects` and `users` tables.
 
@@ -265,9 +285,11 @@ classDiagram
         +String builderId
         +String contractorId
         +double overallProgress
+        +double allocatedBudget
         +DateTime startDate
         +DateTime endDate
         +List~Phase~ phases
+        +List~MaterialStock~ stock
         +factory fromJson(Map json)
         +Map toJson()
         +double recalculateProgress()
@@ -298,20 +320,17 @@ classDiagram
         +void toggleCompletion(String userId)
     }
 
-    class MaterialRequest {
-        +String requestId
+    class MaterialStock {
+        +String stockId
         +String projectId
-        +String contractorId
         +String materialName
-        +double requestedQuantity
+        +double initialQuantity
+        +double remainingQuantity
         +String unit
-        +RequestStatus status
-        +DateTime requestedDate
-        +DateTime? expectedArrivalDate
-        +DateTime updatedAt
+        +DateTime recordedDate
         +factory fromJson(Map json)
         +Map toJson()
-        +void markAsArriving(DateTime expectedDate)
+        +double getConsumedQuantity()
     }
 
     class DailyLog {
@@ -320,20 +339,32 @@ classDiagram
         +String contractorId
         +DateTime logDate
         +String? notes
-        +int laborCount
         +double machineryHours
         +List~MaterialUsage~ usages
+        +List~DailyAttendance~ attendance
         +DateTime createdAt
         +factory fromJson(Map json)
         +Map toJson()
+        +double getTotalWages()
     }
 
     class MaterialUsage {
         +String usageId
         +String logId
+        +String stockId
         +String materialName
         +double quantityUsed
         +String unit
+        +factory fromJson(Map json)
+        +Map toJson()
+    }
+
+    class DailyAttendance {
+        +String attendanceId
+        +String logId
+        +String workerName
+        +double dailyWage
+        +bool isPresent
         +factory fromJson(Map json)
         +Map toJson()
     }
@@ -360,5 +391,8 @@ classDiagram
     %% Associations
     Project "1" *-- "many" Phase : contains
     Phase "1" *-- "many" SubPhase : contains
+    Project "1" *-- "many" MaterialStock : tracks
     DailyLog "1" *-- "many" MaterialUsage : contains
+    DailyLog "1" *-- "many" DailyAttendance : contains
+    MaterialStock "1" *-- "many" MaterialUsage : deductedBy
 ```

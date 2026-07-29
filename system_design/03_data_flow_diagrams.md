@@ -19,21 +19,21 @@ flowchart TD
 
     %% Data Flow from Contractor to System
     C -- "1. Completed Sub-points" --> System
-    C -- "2. Material Requests (Needs)" --> System
-    C -- "3. Daily Logs (Labor, Machine, Usage)" --> System
+    C -- "2. Daily Material Consumption" --> System
+    C -- "3. Daily Logs (Attendance, Machine, Notes)" --> System
     C -- "4. Site Issues & Snags" --> System
 
     %% Data Flow from System to Contractor
-    System -- "a. Delivery Status (Arriving)" --> C
+    System -- "a. Stock Levels & Alerts" --> C
     System -- "b. Active Site Issues List" --> C
 
     %% Data Flow from Builder to System
-    B -- "I. Update Material Status to 'Arriving'" --> System
+    B -- "I. Record Initial Material Stock" --> System
     B -- "II. Close Resolved Site Issues" --> System
 
     %% Data Flow from System to Builder
     System -- "A. Overall Progress % & Phase Lists" --> B
-    System -- "B. Active Material Requests" --> B
+    System -- "B. Stock Levels & Low Stock Alerts" --> B
     System -- "C. Dashboard Overview & Active Issues" --> B
 
     %% Custom formatting
@@ -57,14 +57,14 @@ flowchart TD
 
     %% Processes (Bubbles)
     P1(["1.0 Track Progress & Phases"])
-    P2(["2.0 Manage Material Needs"])
+    P2(["2.0 Manage Material Stock & Consumption"])
     P3(["3.0 Log Daily Operations (DPR)"])
     P4(["4.0 Manage Site Issues (Snags)"])
 
     %% Data Stores (Databases)
     D1[("DS1: Project Phases & Progress")]
-    D2[("DS2: Material Requests")]
-    D3[("DS3: Daily Site Reports")]
+    D2[("DS2: Material Stock & Consumption")]
+    D3[("DS3: Daily Logs & Attendance")]
     D4[("DS4: Site Issues")]
 
     %% Process 1.0 (Progress Flow)
@@ -74,16 +74,15 @@ flowchart TD
     P1 -- "Display Percentage Progress" --> B
 
     %% Process 2.0 (Material Flow)
-    C -- "Submit Material Requests" --> P2
-    P2 -- "Save Request" --> D2
-    D2 -- "Retrieve Pending Requests" --> P2
-    P2 -- "Show Material Needs" --> B
-    B -- "Mark Status as 'Arriving'" --> P2
-    P2 -- "Update Request Status" --> D2
-    P2 -- "Notify: 'Material Arriving'" --> C
+    B -- "Record Initial Stock Delivery" --> P2
+    P2 -- "Save Stock" --> D2
+    C -- "Log Daily Material Consumption" --> P2
+    P2 -- "Deduct from Stock" --> D2
+    D2 -- "Check Low Stock Threshold" --> P2
+    P2 -- "Show Stock Levels & Alerts" --> B
 
     %% Process 3.0 (DPR Flow)
-    C -- "Submit Labor, Machine, & Material Usage Logs" --> P3
+    C -- "Submit Attendance (with wage), Machine, & Notes" --> P3
     P3 -- "Save Daily Logs" --> D3
     D3 -- "Get Daily Summary Logs" --> P3
     P3 -- "Show Daily Logs Summary" --> B
@@ -117,14 +116,16 @@ Here is what happens inside each of the 4 databases:
 * **Input from Contractor:** Checks off completed tasks (e.g., *Area Inspection*).
 * **Output to Builder Dashboard:** Shows simple progress bars (e.g., *Substructure is 50% done*, *Overall Project is 12% done*).
 
-### DS2: Material Requests Database
-* **Input from Contractor:** List of materials needed (Cement, Sand, etc.).
-* **Action by Builder:** Taps "Mark Arriving" when ordered.
-* **Output to Contractor:** Changes status color from red (Pending) to yellow (Arriving) on their phone.
+### DS2: Material Stock & Consumption Database
+* **Input from Builder:** Records initial material stock delivered to site (e.g., *50 bags of cement*).
+* **Input from Contractor:** Logs daily material consumption (e.g., *Used 10 bags of cement*).
+* **System Action:** Auto-deducts consumed quantity from stock and alerts Builder when stock is low.
+* **Output to Builder Dashboard:** Shows remaining stock levels and consumption trends.
 
-### DS3: Daily Site Reports Database
-* **Input from Contractor:** Daily logs including worker count, machine hours, and material consumed today.
-* **Output to Builder Dashboard:** A clean daily report ledger summarizing how resources are being used.
+### DS3: Daily Site Reports & Attendance Database
+* **Input from Contractor:** Daily logs including progress notes, worker attendance (with daily wage), machinery hours, and material consumed today.
+* **System Action:** Auto-calculates total wages payable per worker and aggregate labor cost.
+* **Output to Builder Dashboard:** A clean daily report ledger with attendance summary, wage liability, and resource usage.
 
 ### DS4: Site Issues Database
 * **Input from Contractor/Builder:** Defect reports with photos.

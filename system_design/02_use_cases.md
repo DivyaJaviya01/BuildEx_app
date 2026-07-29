@@ -9,12 +9,12 @@ This document explains what the **Builder** and the **Contractor** can do inside
 * **Builder (Owner):** 
   * Wants to see a **Dashboard** with overall project progress (in %).
   * Wants to track progress divided by **Phases (Points)** and **Sub-phases (Sub-points)** (e.g., *Phase 1: Substructure* -> *Area Inspection*).
-  * Reviews material requests and updates the status to **"Arriving"**.
+  * Records initial material stock and monitors low stock alerts.
   * Monitors active site issues.
 * **Contractor (Site Manager):** 
   * Submits **Daily Progress Reports (DPR)** (work done, materials used, labor attendance, machinery logs).
   * Marks phase sub-points as completed.
-  * Sends requests for materials (**Material Needs**).
+  * Logs daily material consumption from stock.
   * Reports site issues.
 
 ---
@@ -33,15 +33,16 @@ flowchart LR
     subgraph BuildEx ["🛡️ BuildEx App"]
         
         %% Material Module
-        subgraph MaterialModule ["Material Requests"]
-            UC_RequestMaterials(["Request Materials"])
-            UC_ApproveRequest(["Mark Material as 'Arriving'"])
-            UC_LogUsage(["Log Daily Material Usage"])
+        subgraph MaterialModule ["Material Stock & Consumption"]
+            UC_RecordStock(["Record Initial Material Stock"])
+            UC_LogUsage(["Log Daily Material Consumption"])
+            UC_ViewStock(["View Stock Levels & Alerts"])
         end
 
         %% Site Execution Module
         subgraph ExecutionModule ["Daily Site Work"]
             UC_MarkSubpoint(["Mark Sub-points as Completed"])
+            UC_LogAttendance(["Log Worker Attendance with Wage"])
             UC_LogDPR(["Submit Daily Logs (Labor, Machine, Photos)"])
             UC_ReportSnag(["Report a Site Issue"])
         end
@@ -54,14 +55,15 @@ flowchart LR
     end
 
     %% Contractor Actions
-    C --> UC_RequestMaterials
     C --> UC_LogUsage
+    C --> UC_LogAttendance
     C --> UC_MarkSubpoint
     C --> UC_LogDPR
     C --> UC_ReportSnag
 
     %% Builder Actions
-    B --> UC_ApproveRequest
+    B --> UC_RecordStock
+    B --> UC_ViewStock
     B --> UC_ViewDashboard
     B --> UC_ViewIssues
     B --> UC_ReportSnag
@@ -72,7 +74,7 @@ flowchart LR
     classDef boundary fill:#F2F8F8,stroke:#6d797a,stroke-width:2px,stroke-dasharray: 5 5;
     
     class B,C actor;
-    class UC_RequestMaterials,UC_ApproveRequest,UC_LogUsage,UC_MarkSubpoint,UC_LogDPR,UC_ReportSnag,UC_ViewDashboard,UC_ViewIssues usecase;
+    class UC_RecordStock,UC_LogUsage,UC_ViewStock,UC_LogAttendance,UC_MarkSubpoint,UC_LogDPR,UC_ReportSnag,UC_ViewDashboard,UC_ViewIssues usecase;
     class BuildEx boundary;
 ```
 
@@ -102,34 +104,38 @@ Here are the 4 main workflows explaining what the contractor does daily, what th
 
 ---
 
-### 2. Material Requests & Updates ("Arriving")
+### 2. Material Stock & Consumption
 
-* **What is it?** How the contractor requests materials and how the builder updates their delivery status.
+* **What is it?** How material stock is recorded, consumed, and tracked so the Builder knows when to replenish.
 * **Who does what?**
-  * **Contractor** raises requests.
-  * **Builder** updates status to "Arriving."
+  * **Builder** records initial stock deliveries.
+  * **Contractor** logs daily consumption.
+  * **System** auto-calculates remaining stock and alerts on low levels.
 * **How it works step-by-step:**
-  1. **Contractor** raises a request (e.g., "Need 100 bags of cement").
-  2. **Builder** sees this request on their dashboard.
-  3. **Builder** orders it from the supplier and marks the request status as **"Arriving"** inside the app.
-  4. The **Contractor** sees the "Arriving" status on their phone so they know when to expect it.
-* **What the Builder sees on the Dashboard:** A list of active contractor material requests and their status (Pending / Arriving).
+  1. **Builder** records material delivery (e.g., "50 bags of cement received").
+  2. **Contractor** logs daily usage (e.g., "Used 10 bags of cement today").
+  3. System deducts consumption and updates remaining quantity.
+  4. When stock is low (e.g., below 20%), **Builder** sees an alert on the dashboard.
+  5. **Builder** orders more stock from the supplier.
+* **What the Builder sees on the Dashboard:** Stock levels per material, consumption trends, and low-stock alerts.
 
 ---
 
 ### 3. Daily Site Logs (DPR)
 
-* **What is it?** Daily records of labor, machinery, and materials used.
+* **What is it?** Daily records of sub-phase progress, worker attendance (with wages), machinery, and materials used.
 * **Who does what?**
-  * **Contractor** logs usage daily.
+  * **Contractor** logs everything daily.
   * **Builder** views daily details.
 * **How it works step-by-step:**
   1. Throughout the day, the **Contractor** logs:
-     * **Material Used:** e.g., "Used 50 bags of cement for roof casting."
-     * **Labor Attendance:** e.g., "10 masons, 12 helpers present."
+     * **Sub-phase Progress:** Marks sub-points as completed (e.g., "Clean Area").
+     * **Material Used:** e.g., "Used 10 bags of cement for slab casting."
+     * **Worker Attendance:** Adds each worker with name and daily wage, marks Present/Absent.
      * **Machinery:** e.g., "Mixer machine used for 3 hours."
   2. Contractor uploads site photos and submits the log.
-* **What the Builder sees on the Dashboard:** A simple summary of daily operations, material consumption, and total workers present.
+  3. System auto-calculates phase progress and total wages payable.
+* **What the Builder sees on the Dashboard:** Phase-wise progress %, worker attendance summary, wage liability, and material consumption.
 
 ---
 

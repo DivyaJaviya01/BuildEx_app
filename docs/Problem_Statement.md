@@ -1,6 +1,6 @@
 
 
-# BuildTrack - Project Overview for Team Members
+# BuildEx - Project Overview for Team Members
 
 ## What is the problem?
 
@@ -10,7 +10,7 @@ Most small and medium construction companies still manage their work using tradi
 
 Let's take an example of a normal working day.
 
-A site engineer reaches the construction site in the morning and supervises the workers. Throughout the day, they need to keep track of many things:
+A contractor reaches the construction site in the morning and supervises the workers. Throughout the day, they need to keep track of many things:
 
 * What work was completed today
 * Which workers came to the site
@@ -18,7 +18,7 @@ A site engineer reaches the construction site in the morning and supervises the 
 * Whether any problems or defects were found
 * Photos of the work completed
 
-At the end of the day, the project manager asks for a daily report. Since all the information is scattered in different places, the engineer has to collect everything manually.
+At the end of the day, the builder asks for a daily report. Since all the information is scattered in different places, the contractor has to collect everything manually.
 
 For example:
 
@@ -40,13 +40,13 @@ This creates several problems.
 * Issues or defects are often forgotten.
 * Finding old records later is very difficult.
 
-Instead of focusing on construction work, engineers spend a significant amount of time preparing reports.
+Instead of focusing on construction work, contractors spend a significant amount of time preparing reports.
 
 ---
 
 # Our Solution
 
-To solve these problems, we will build a Flutter mobile application called **BuildTrack**.
+To solve these problems, we will build a Flutter mobile application called **BuildEx**.
 
 The idea is simple.
 
@@ -54,7 +54,7 @@ Instead of maintaining multiple notebooks and sending information through WhatsA
 
 Whenever work is completed, they simply open the app, select the project, enter today's progress, upload photos, record attendance, and submit the report.
 
-All information is stored in one place and can later be viewed by the project manager.
+All information is stored in one place and can later be viewed by the builder.
 
 This saves time and keeps every project organized.
 
@@ -64,7 +64,7 @@ This saves time and keeps every project organized.
 
 The daily workflow will look something like this:
 
-1. Engineer logs into the app.
+1. Contractor logs into the app.
 2. Selects the construction project.
 3. Records today's work.
 4. Uploads site photos.
@@ -73,7 +73,7 @@ The daily workflow will look something like this:
 7. Reports any issues or defects.
 8. Submits the daily report.
 
-The manager can then open the application and see the latest updates without calling the engineer every evening.
+The builder can then open the application and see the latest updates without calling the contractor every evening.
 
 ---
 
@@ -184,8 +184,8 @@ Everyone should also help with testing, discussing ideas, fixing bugs, and prepa
 
 Our project can be considered successful if:
 
-* Engineers can create daily reports much faster than using paper.
-* Managers can easily check project progress.
+* Contractors can create daily reports much faster than using paper.
+* Builders can easily check project progress.
 * Photos, attendance, and material records stay organized.
 * Paperwork is significantly reduced.
 * Users can find old project records quickly.

@@ -1,6 +1,6 @@
-# BuildTrack -- User Workflow & Navigation Map
+# BuildEx -- User Workflow & Navigation Map
 
-This document outlines the step-by-step user journeys and navigation flows for the **BuildTrack** Mobile Application, mapping directly to the screens designed in the Stitch project.
+This document outlines the step-by-step user journeys and navigation flows for the **BuildEx** Mobile Application, mapping directly to the screens designed in the Stitch project.
 
 ---
 
@@ -39,25 +39,25 @@ graph TD
 *   **Action:** The user sees a list of active and on-hold construction sites assigned to them. Each project card summarizes the site name, location, today's report status (e.g., `DRAFT`, `SUBMITTED`, `PENDING`), and overall completion percentage.
 *   **Navigation:**
     *   **Main Card Tap:**
-        *   If the user is a **Site Manager**, it opens the **Project Hub** (Editable operations cockpit).
-        *   If the user is a **Site Builder**, it opens the **Project Dashboard** (Read-only monitoring view).
-    *   **Quick Update Icon Tap (Site Builder Shortcut):**
-        *   Site Builders can tap the **Quick Update** (`edit_note`) shortcut icon directly on the card to bypass the dashboard and open the **Project Hub** (Editable operations cockpit).
-    *   **Trigger to Add New Project:** Site Builders can tap the **New Project** card (the yellow card with `add_circle` icon) to open the **`Add New Project`** screen.
+        *   If the user is a **Contractor**, it opens the **Project Hub** (Editable operations cockpit).
+        *   If the user is a **Builder**, it opens the **Project Dashboard** (Read-only monitoring view).
+    *   **Quick Update Icon Tap (Builder Shortcut):**
+        *   Builders can tap the **Quick Update** (`edit_note`) shortcut icon directly on the card to bypass the dashboard and open the **Project Hub** (Editable operations cockpit).
+    *   **Trigger to Add New Project:** Builders can tap the **New Project** card (the yellow card with `add_circle` icon) to open the **`Add New Project`** screen.
 
-### Step 4: Add New Project (Site Builder Only)
+### Step 4: Add New Project (Builder Only)
 *   **Screen:** `Add New Project`
-*   **Action:** Input the project details: Project Name, Site ID, Location, Allocated Budget, expected completion date, assigned Site Manager, and baseline lifecycle template. Saving registers the project in the database.
+*   **Action:** Input the project details: Project Name, Site ID, Location, Allocated Budget, expected completion date, assigned Contractor, and baseline lifecycle template. Saving registers the project in the database.
 *   **Navigation:** Navigates back to the **My Projects** list.
 
 ---
 
-## 3. Site Manager Flow (Data Entry & Submission)
+## 3. Contractor Flow (Data Entry & Submission)
 
-This flow is designed for the on-site Site Manager who coordinates daily work, logs materials, records attendance, and compiles the daily report. 
+This flow is designed for the on-site Contractor who coordinates daily work, logs materials, records attendance, and compiles the daily report. 
 
 > [!NOTE]
-> The **Site Builder** (Main Builder) also has access to see and view all of the Site Manager's data entry pages for monitoring.
+> The **Builder** also has access to see and view all of the Contractor's data entry pages for monitoring.
 
 ```mermaid
 flowchart TD
@@ -75,7 +75,7 @@ flowchart TD
     Summary --> Submit[Submit & Lock Report]
 ```
 
-### Step 5: Project Hub (Site Manager's Cockpit)
+### Step 5: Project Hub (Contractor's Cockpit)
 *   **Screen:** `Project Hub`
 *   **Action:** Acts as the primary daily checklist. Displays today's progress bar (e.g., 65%) and the remaining steps.
 *   **Navigation:** Contains a 2-column action grid leading to data logging sub-pages:
@@ -88,7 +88,7 @@ flowchart TD
 
 ### Step 6: Logging Today's Progress Notes
 *   **Screen:** `Daily Progress`
-*   **Action:** The engineer inputs multiline details of the work done today. Selects today's status: `On Track`, `Delayed`, or `Blocked`.
+*   **Action:** The contractor inputs multiline details of the work done today. Selects today's status: `On Track`, `Delayed`, or `Blocked`.
 *   **Navigation:** Tapping **SAVE NOTES** saves a draft and returns to the `Project Hub`.
 
 ### Step 7: Capturing Site Photos
@@ -113,14 +113,14 @@ flowchart TD
 
 ### Step 11: Daily Report compilation
 *   **Screen:** `Daily Report Summary`
-*   **Action:** The system aggregates all drafts saved today into a single, clean preview page. The Site Manager reviews the compiled sections (Progress description, Worker Attendance summary, Materials expense receipts, uploaded Photos, and active Issues).
-*   **Navigation:** Tapping **SUBMIT REPORT TO CLOUD** locks today's logs, pushes the locked report to the database, and redirects the engineer back to the `My Projects` list.
+*   **Action:** The system aggregates all drafts saved today into a single, clean preview page. The Contractor reviews the compiled sections (Progress description, Worker Attendance summary, Materials expense receipts, uploaded Photos, and active Issues).
+*   **Navigation:** Tapping **SUBMIT REPORT TO CLOUD** locks today's logs, pushes the locked report to the database, and redirects the Contractor back to the `My Projects` list.
 
 ---
 
-## 4. Site Builder Flow (Remote Monitoring)
+## 4. Builder Flow (Remote Monitoring)
 
-This flow is designed for the Site Builder (Main Builder) to remotely monitor progress, audit daily logs, track defects, and view trends across multiple sites without needing to visit manually or make phone calls.
+This flow is designed for the Builder to remotely monitor progress, audit daily logs, track defects, and view trends across multiple sites without needing to visit manually or make phone calls.
 
 ```mermaid
 flowchart TD
@@ -198,7 +198,7 @@ flowchart TD
 *   **Step 2: Filtering Tasks:** The user filters tasks using top chips (`All`, `Pending`, `Completed`) or search.
 *   **Step 3: Direct Action Shortcuts:**
     *   Tapping the main body of a task card opens the **`Task Details`** screen to review detailed sub-checklists and user comment threads.
-    *   Tapping the **"Update"** button on a task related to data collection (e.g., *"Log concrete delivery for Metro Line"*) redirects the Site Manager directly to the **Material Log** page of that project.
+    *   Tapping the **"Update"** button on a task related to data collection (e.g., *"Log concrete delivery for Metro Line"*) redirects the Contractor directly to the **Material Log** page of that project.
     *   Tapping the checkbox directly on the task card marks it as done without leaving the page.
 *   **Trigger to Add New Task:** Tapping the yellow `+` Floating Action Button (FAB) in the bottom-right of the **My Tasks** screen opens the task creation form.
 
@@ -206,7 +206,7 @@ flowchart TD
 
 ## 7. Team Tab Workflow (`My Team`)
 
-This directory allows the Site Builder and Site Managers to coordinate and contact staff on-site.
+This directory allows the Builder and Contractors to coordinate and contact staff on-site.
 
 ```mermaid
 flowchart TD
@@ -225,7 +225,7 @@ flowchart TD
 *   **Step 1: Accessing Team Directory:** The user taps the **Team** tab in the bottom nav to load the **My Team** screen.
 *   **Step 2: Searching Personnel:** The directory displays all managers, builders, and workers. It can be filtered by active project site or role.
 *   **Step 3: Accessing Contact Options:** Tapping any member card opens a bottom sheet detailing their role, assigned site, active tasks, and direct quick-action buttons (Call, SMS, Email).
-*   **Trigger to Invite Member (Site Builder Only):** Tapping the yellow `+` Floating Action Button (FAB) in the bottom-right of the **My Team** screen (visible only to Site Builders) opens the **Invite Team Member** registration form.
+*   **Trigger to Invite Member (Builder Only):** Tapping the yellow `+` Floating Action Button (FAB) in the bottom-right of the **My Team** screen (visible only to Builders) opens the **Invite Team Member** registration form.
 
 ---
 

@@ -1,6 +1,6 @@
-# BuildTrack - Product Requirements Document (PRD)
+# BuildEx - Product Requirements Document (PRD)
 
-**Project:** BuildTrack (Working Title)  
+**Project:** BuildEx  
 **Platform:** Flutter (Android first, iOS later)  
 **Version:** 1.0  
 **Purpose:** Team onboarding document
@@ -9,7 +9,7 @@
 
 # 1. Project Overview
 
-BuildTrack is a mobile application that helps construction companies replace paper-based daily site management with a simple digital system.
+BuildEx is a mobile application that helps construction companies replace paper-based daily site management with a simple digital system.
 
 Instead of using notebooks, WhatsApp messages, Excel sheets, and phone galleries, engineers can record everything inside one app.
 
@@ -21,13 +21,13 @@ The goal is to make site reporting faster, organized, and easier to access for e
 
 Many small and medium construction companies still manage projects manually.
 
-A typical site engineer has to:
+A typical contractor has to:
 
 - Write daily work in a notebook
 - Take photos with their phone
 - Record worker attendance on paper
 - Track material usage manually
-- Report progress to the project manager using WhatsApp or phone calls
+- Report progress to the builder using WhatsApp or phone calls
 
 This creates several problems:
 
@@ -42,11 +42,11 @@ This creates several problems:
 
 # 3. Our Solution
 
-BuildTrack provides one mobile application where the site engineer can manage daily construction work.
+BuildEx provides one mobile application where the contractor can manage daily construction work.
 
 Instead of maintaining multiple records, everything is stored inside one app.
 
-The engineer simply:
+The contractor simply:
 
 - Selects the project
 - Records today's work
@@ -56,23 +56,19 @@ The engineer simply:
 - Reports issues
 - Submits the daily report
 
-The manager can later view all project updates from one place.
+The builder can later view all project updates from one place.
 
 ---
 
 # 4. Target Users
 
-### Site Engineer
+### Contractor
 
-Uses the app daily to record construction activities.
+Uses the app daily to record construction activities on-site.
 
-### Project Manager
+### Builder
 
-Monitors project progress and reviews reports.
-
-### Contractor / Company Owner
-
-Tracks overall project status and performance.
+Monitors project progress, reviews reports, and manages the project.
 
 ---
 
@@ -195,7 +191,7 @@ Problems
 
 ---
 
-New Workflow Using BuildTrack
+New Workflow Using BuildEx
 
 ```
 Open App
@@ -223,7 +219,7 @@ Everything is stored in one place.
 
 # 9. User Flow
 
-## Site Engineer
+## Contractor
 
 Login
 
@@ -245,7 +241,7 @@ Submit
 
 ---
 
-## Project Manager
+## Builder
 
 Login
 
@@ -318,8 +314,8 @@ Responsible for:
 
 The project is successful if:
 
-- Engineers can submit reports in less than 10 minutes.
-- Managers can view reports from anywhere.
+- Contractors can submit reports in less than 10 minutes.
+- Builders can view reports from anywhere.
 - Photos remain organized by project.
 - Attendance is stored digitally.
 - Material records are searchable.
@@ -368,13 +364,13 @@ The project is successful if:
 
 # 13. Expected Benefits
 
-For Engineers
+For Contractors
 
 - Less paperwork
 - Faster reporting
 - Easier photo management
 
-For Managers
+For Builders
 
 - Better project visibility
 - Faster decision making
@@ -390,7 +386,7 @@ For Company
 
 # 14. Future Vision
 
-In the future, BuildTrack can become a complete construction management platform.
+In the future, BuildEx can become a complete construction management platform.
 
 Possible future modules:
 

@@ -1,10 +1,9 @@
-# BuildTrack -- Design Guidelines
+# BuildEx -- Design Guidelines
 
 ## 1. Design Overview
 
-BuildTrack is a modern mobile-first construction project management
-application designed for site engineers, supervisors, contractors,
-project managers, and construction teams.
+BuildEx is a modern mobile-first construction project management
+application designed for contractors and builders.
 
 The interface must feel:
 
@@ -18,20 +17,20 @@ The interface must feel:
 -   Consistent across every screen
 
 The UI should follow the supplied reference design while using the
-**BuildTrack brand identity and the user's own existing logo**.
+**BuildEx brand identity and the user's own existing logo**.
 
 ------------------------------------------------------------------------
 
 ## 2. Mandatory Mobile Width
 
 **All screens must be designed using a base mobile width of exactly
-440px.**
+390px.**
 
 ### Layout Rules
 
--   Base design width: **440px**
+-   Base design width: **390px**
 -   Width: **100%**
--   Maximum width: **440px**
+-   Maximum width: **390px**
 -   Center the app container when previewed on a larger viewport
 -   Height should adapt naturally to screen content
 -   No horizontal overflow
@@ -43,7 +42,7 @@ Example:
 ``` css
 .app-container {
     width: 100%;
-    max-width: 440px;
+    max-width: 390px;
     margin: 0 auto;
 }
 ```
@@ -55,13 +54,13 @@ preserving the same visual hierarchy.
 
 ## 3. Logo -- Mandatory Rule
 
-BuildTrack has its **own custom logo**.
+BuildEx has its **own custom logo**.
 
-Always use the existing BuildTrack logo asset supplied with the project.
+Always use the existing BuildEx logo asset supplied with the project.
 
 ### Do
 
--   Use the provided logo asset
+-   Use the provided BuildEx logo asset
 -   Preserve the original proportions
 -   Keep sufficient clear space around the logo
 -   Use it on authentication and branding screens
@@ -72,11 +71,10 @@ Always use the existing BuildTrack logo asset supplied with the project.
 -   Redesign the logo
 -   Replace it with a generic construction icon
 -   Replace it with plain text
--   Use the BuildEx logo from the visual reference
 -   Distort, stretch, or unnecessarily modify the existing logo
 
 The reference design is for **UI inspiration only**. Its logo must not
-replace the BuildTrack logo.
+replace the BuildEx logo.
 
 ------------------------------------------------------------------------
 
@@ -241,7 +239,7 @@ Examples:
 
 ## 8. Cards
 
-Cards are a core component of the BuildTrack interface.
+Cards are a core component of the BuildEx interface.
 
 Use them for:
 
@@ -333,7 +331,7 @@ Create a clean registration screen.
 
 ### Content
 
--   Existing BuildTrack logo at the top
+-   Existing BuildEx logo at the top
 -   Title: **Create Account**
 -   Subtitle: **Join the professional construction network**
 
@@ -358,7 +356,7 @@ Keep the screen minimal and focused.
 
 ## 12. Sign In
 
-Use the existing BuildTrack logo prominently.
+Use the existing BuildEx logo prominently.
 
 ### Fields
 
@@ -869,16 +867,16 @@ Avoid excessive pill-shaped components outside small badges and filters.
 
 The primary reference width is:
 
-**440px**
+**390px**
 
-Design every screen for 440px first.
+Design every screen for 390px first.
 
 Then make it responsive for smaller screens.
 
 ### Required
 
 -   `width: 100%`
--   `max-width: 440px`
+-   `max-width: 390px`
 -   No horizontal scrolling
 -   Cards normally use full available width
 -   Inputs and buttons adapt to container width
@@ -889,7 +887,7 @@ Then make it responsive for smaller screens.
 
 ## 28. UX Principles
 
-Every BuildTrack screen should prioritize:
+Every BuildEx screen should prioritize:
 
 1.  Clarity
 2.  Fast navigation
@@ -911,8 +909,8 @@ information must be quickly understandable.
 
 ### Do Not
 
--   Generate or replace the BuildTrack logo
--   Use the BuildEx logo from the reference design
+-   Generate or replace the BuildEx logo
+-   Use the reference design logo
 -   Create desktop layouts
 -   Exceed the 440px base/max application width
 -   Use excessive gradients
@@ -953,11 +951,11 @@ The style should remain:
 
 These requirements override optional styling decisions:
 
-1.  **Base mobile design width must be 440px.**
-2.  **Maximum application content width must be 440px.**
-3.  **Always use the project's own existing BuildTrack logo.**
+1.  **Base mobile design width must be 390px.**
+2.  **Maximum application content width must be 390px.**
+3.  **Always use the project's own existing BuildEx logo.**
 4.  **Never generate, redesign, or substitute another logo.**
-5.  **Never use the BuildEx logo from the reference as the final logo.**
+5.  **Never use the reference design logo as the final logo.**
 6.  **Follow the supplied reference design's overall mobile layout and
     visual language.**
 7.  **Maintain teal + construction-yellow branding.**
@@ -968,6 +966,6 @@ These requirements override optional styling decisions:
 11. **Keep the UI minimal and easy to use on a construction site.**
 12. **Do not create desktop-style dashboards or layouts.**
 13. **Prioritize readability and touch-friendly interactions.**
-14. **Keep all content inside the 440px mobile application container.**
+14. **Keep all content inside the 390px mobile application container.**
 15. **The final UI should feel production-ready, modern, and
     professional.**

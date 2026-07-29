@@ -19,14 +19,14 @@ flowchart TD
     C_Projects --> C_Home[3. Contractor Project Home]
     C_Home --> C_DPR[a. Log DPR Form]
     C_Home --> C_Phases[b. Phase & Sub-points Checklist]
-    C_Home --> C_Indent[c. Request Materials Screen]
+    C_Home --> C_Material[c. Log Material Consumption]
     C_Home --> C_Issue[d. Report site defect Screen]
 
     %% Builder Screens
     RoleCheck -- Builder --> B_Projects[2. Builder Project List]
     B_Projects --> B_Dash[3. Builder Dashboard]
     B_Dash --> B_Progress[a. Phase Percentage Tracker]
-    B_Dash --> B_MaterialPanel[b. Material Needs Review Panel]
+    B_Dash --> B_StockPanel[b. Material Stock & Alerts Panel]
     B_Dash --> B_IssueTracker[c. Active Issues & Snag Tracker]
 
     %% Custom formatting
@@ -35,33 +35,33 @@ flowchart TD
     classDef builder fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#f57f17;
     
     class Start,AuthScreen,RoleCheck onboarding;
-    class C_Projects,C_Home,C_DPR,C_Phases,C_Indent,C_Issue contractor;
-    class B_Projects,B_Dash,B_Progress,B_MaterialPanel,B_IssueTracker builder;
+    class C_Projects,C_Home,C_DPR,C_Phases,C_Material,C_Issue contractor;
+    class B_Projects,B_Dash,B_Progress,B_StockPanel,B_IssueTracker builder;
 ```
 
 ### Detailed Screen Profiles
 
 #### A. Shared Screens
-* **Login / Register Screen:** Email and password auth. User selects role during sign-up (Builder or Contractor).
+* **Login / Register Screen:** Email and password auth. Implicit role assignment (User registers via email; Builder by default, Contractor if previously assigned to a site via email).
 * **Project Selection Screen:** Grid/list of active projects assigned to the user.
 
 #### B. Contractor App Screens
-* **Contractor Project Home:** Quick actions panel to log work, mark attendance, request materials, or check stock.
+* **Contractor Project Home:** Quick actions panel to log work, mark attendance, log material consumption, or check stock.
 * **Phase Checklist Screen:** Collapsible list showing all Phases (e.g. Substructure) and Sub-points (e.g. Area Inspection) with simple checkmark boxes.
 * **Daily Log Form (DPR):** Single-page scrollable form to input:
-  * Worker count (Labor attendance).
+  * Worker attendance with name and daily wage (Present/Absent).
   * Machine operating hours.
-  * Material quantities consumed today.
+  * Material quantities consumed today (deducted from stock).
   * Photo attachment from camera.
-* **Material Needs Form:** Easy dropdown selection of material name, quantity, and requested date.
+* **Material Consumption Form:** Select material from stock list and enter quantity used.
 * **Snag Report Form:** Snaps a photo of the site issue, writes a brief description, and selects severity (Low/Medium/High).
 
 #### C. Builder App Screens
 * **Builder Dashboard Screen:** The primary screen for the Builder. Includes:
   * Overall project completion percentage.
-  * Quick-stats cards: *Pending Material Requests*, *Active Snags*, *Today's Labor Count*.
+  * Quick-stats cards: *Low Stock Alerts*, *Active Snags*, *Today's Labor Count*.
 * **Phase Progress Screen:** Visual progress bars for each phase (e.g. *Phase 2 Digging: 75% completed*).
-* **Material Needs Panel:** List of contractor requests. Tapping a request opens options to select an expected delivery date and click "Mark Arriving."
+* **Material Stock Panel:** View stock levels per material, consumption trends, and low-stock alerts.
 * **Site Issues Panel:** Lists active defects with photo thumbnails. Tapping an issue shows the before/after photos and the "Close Ticket" button.
 
 ---
@@ -88,9 +88,9 @@ flowchart LR
 2. **`ProjectProgressBloc`**
    * *Events:* `LoadProjectProgress`, `ToggleSubpointCompletion(subPhaseId)`.
    * *States:* `ProgressLoading`, `ProgressLoaded(ProjectModel)`, `ProgressSyncError`.
-3. **`MaterialRequestBloc`**
-   * *Events:* `LoadMaterialRequests`, `SubmitRequest(Indent)`, `UpdateStatusToArriving(requestId, expectedDate)`.
-   * *States:* `RequestsLoading`, `RequestsLoaded(List<MaterialRequest>)`, `RequestActionSuccess`.
+3. **`MaterialStockBloc`**
+   * *Events:* `LoadStockLevels`, `RecordStockDelivery(MaterialStock)`, `LogConsumption(usage)`.
+   * *States:* `StockLoading`, `StockLoaded(List<MaterialStock>)`, `LowStockAlert`, `StockActionSuccess`.
 4. **`DailyLogBloc`**
    * *Events:* `SubmitDPR(DailyLog)`, `LoadDPRHistory`.
    * *States:* `LogSubmitting`, `LogSubmittedSuccess`, `LogHistoryLoaded`.

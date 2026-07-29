@@ -12,8 +12,11 @@ This diagram shows how the Contractor submits the Daily Progress Report (DPR) an
 flowchart TD
     Start([Start Daily Log]) --> SelectSubpoint[1. Contractor selects active Sub-point<br/>e.g., 'Clean Area']
     SelectSubpoint --> MarkComplete[2. Marks Sub-point as Completed]
-    MarkComplete --> LogUsage[3. Logs daily material consumption<br/>e.g., 'Cement: 50 bags']
-    LogUsage --> LogLabor[4. Marks worker count<br/>e.g., '12 masons']
+    MarkComplete --> LogUsage[3. Logs daily material consumption<br/>e.g., 'Cement: 10 bags used']
+    LogUsage --> CheckStock{Stock low?}
+    CheckStock -- Yes --> AlertBuilder[Alert: Material needs replenishment]
+    AlertBuilder --> LogLabor
+    CheckStock -- No --> LogLabor[4. Add workers with daily wage<br/>e.g., 'Rajesh: 500, Present']
     LogLabor --> LogMachine[5. Logs machine hours<br/>e.g., 'JCB: 4 hours']
     LogMachine --> UploadPhoto[6. Snaps and uploads work photos]
     UploadPhoto --> ClickSubmit{Contractor clicks Submit?}
@@ -28,7 +31,8 @@ flowchart TD
 
     Validate -- Yes --> LockReport[Lock DPR report for the day]
     LockReport --> DB_Write[(Save to Database)]
-    DB_Write --> UpdateProgress[Recalculate Phase & Project %]
+    DB_Write --> DeductStock[Deduct consumed quantity from material stock]
+    DeductStock --> UpdateProgress[Recalculate Phase & Project %]
     UpdateProgress --> RefreshDashboard[Update Builder Dashboard]
     RefreshDashboard --> End([End DPR Flow])
 
@@ -43,27 +47,31 @@ flowchart TD
 
 ---
 
-## 2. Material Request & "Arriving" Workflow
+## 2. Material Stock & Low Stock Alert Workflow
 
-This diagram shows how the Contractor requests materials and how the Builder updates the request until it arrives on site.
+This diagram shows how the Builder records initial material stock, the Contractor logs consumption, and the system alerts when stock needs replenishment.
 
 ```mermaid
 flowchart TD
-    Start([Start Material Needs]) --> C_Request[1. Contractor submits request<br/>e.g., 'Need 100 cement bags']
-    C_Request --> DB_Save[(Request saved as PENDING)]
-    DB_Save --> B_Alert[2. Builder sees request on Dashboard]
-    B_Alert --> B_Order{Builder orders<br/>material from vendor?}
+    Start([Material Management]) --> InitStock[1. Builder records material stock<br/>e.g., 'Cement: 50 bags delivered']
+    InitStock --> DB_Stock[(Stock saved in Database)]
+    DB_Stock --> Consume[2. Contractor logs daily consumption<br/>e.g., 'Used 10 bags of cement']
+    Consume --> CalcRemaining[Deduct from remaining stock]
+    CalcRemaining --> CheckAlert{Remaining below<br/>threshold?}
+    
+    CheckAlert -- No --> EndOK([Continue tracking consumption])
+    CheckAlert -- Yes --> AlertBuilder[3. System alerts Builder:<br/>'Cement running low - 5 bags left']
+    AlertBuilder --> B_Restock[4. Builder orders more stock]
+    B_Restock --> DB_Stock
 
-    B_Order -- No --> Pending[Keep status as PENDING]
-    Pending --> B_Alert
-
-    B_Order -- Yes --> B_MarkArriving[3. Builder marks status as ARRIVING<br/>and enters expected date]
-    B_MarkArriving --> DB_Update[(Update status in Database)]
-    DB_Update --> C_Notify[4. Contractor sees ARRIVING status<br/>on their mobile screen]
-    C_Notify --> MaterialArrive[5. Material truck arrives on site]
-    MaterialArrive --> C_GateIn[6. Contractor verifies quantity<br/>and logs Gate-In]
-    C_GateIn --> DB_StockUpdate[(Stock ledger automatically updated)]
-    DB_StockUpdate --> End([End Material Flow])
+    %% Custom formatting
+    classDef start_end fill:#F2F8F8,stroke:#6d797a,stroke-width:2px,color:#0f1e1f;
+    classDef step fill:#eceff1,stroke:#00696e,stroke-width:2px,color:#0f1e1f;
+    classDef decision fill:#FFC800,stroke:#0f1e1f,stroke-width:2px,color:#0f1e1f;
+    class Start,EndOK start_end;
+    class InitStock,Consume,CalcRemaining,AlertBuilder,B_Restock step;
+    class CheckAlert decision;
+    class DB_Stock store;
 
     %% Custom formatting
     classDef start_end fill:#F2F8F8,stroke:#6d797a,stroke-width:2px,color:#0f1e1f;
