@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/widgets/app_bar.dart';
 
-// Owner: Divya. Figma: Create Account.
+// Owner: Krisha. Figma: Create Account.
 class CreateAccountScreen extends StatelessWidget {
   static const route = '/create-account';
   const CreateAccountScreen({super.key});

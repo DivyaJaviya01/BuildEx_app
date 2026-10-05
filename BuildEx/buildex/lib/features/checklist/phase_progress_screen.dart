@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/widgets/app_bar.dart';
 
-// Owner: Krisha. Figma: Phase Progress.
+// Owner: Divya. Figma: Phase Progress.
 class PhaseProgressScreen extends StatelessWidget {
   static const route = '/phase-progress';
   const PhaseProgressScreen({super.key});

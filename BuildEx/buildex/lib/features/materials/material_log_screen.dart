@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/widgets/app_bar.dart';
 
-// Owner: M2. Figma: Material Log.
+// Owner: Jainil. Figma: Material Log.
 class MaterialLogScreen extends StatelessWidget {
   static const route = '/material-log';
   const MaterialLogScreen({super.key});

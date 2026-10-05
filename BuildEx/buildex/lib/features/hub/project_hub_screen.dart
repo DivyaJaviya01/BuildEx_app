@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/widgets/app_bar.dart';
 
-// Owner: Divya. Figma: Project Hub (contractor action grid + SUBMIT DAILY REPORT).
+// Owner: Jainil. Figma: Project Hub (contractor action grid + SUBMIT DAILY REPORT).
 class ProjectHubScreen extends StatelessWidget {
   static const route = '/hub';
   const ProjectHubScreen({super.key});

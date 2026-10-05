@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/widgets/app_bar.dart';
 
-// Owner: Krisha. Figma: Issue Detail.
+// Owner: Divya. Figma: Issue Detail.
 class IssueDetailScreen extends StatelessWidget {
   static const route = '/issues/detail';
   const IssueDetailScreen({super.key});

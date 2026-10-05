@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/widgets/app_bar.dart';
 
-// Owner: M2. Figma: Site Photos.
+// Owner: Jainil. Figma: Site Photos.
 class SitePhotosScreen extends StatelessWidget {
   static const route = '/site-photos';
   const SitePhotosScreen({super.key});

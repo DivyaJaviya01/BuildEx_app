@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 
-// Shared yellow bottom tab bar: Projects | Tasks | Team | Profile.
-// Spec: docs/Design.md:787 — yellow bg, active item gets dark-teal pill.
+// Shared cream bottom tab bar: Projects | Tasks | Team | Profile.
+// Figma BottomNavBar.png — cream bg, active item gets dark-teal pill.
 // Only Divya edits. Screens pass their index + onTap (navigation wired later).
 class BuildExBottomNav extends StatelessWidget {
   final int currentIndex;
@@ -19,8 +19,8 @@ class BuildExBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.accent,
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      color: AppColors.navBg,
+      padding: const EdgeInsets.symmetric(vertical: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -38,7 +38,7 @@ class BuildExBottomNav extends StatelessWidget {
                   children: [
                     Icon(
                       _items[i].$1,
-                      color: i == currentIndex ? Colors.white : AppColors.textPrimary,
+                      color: i == currentIndex ? Colors.white : AppColors.navInactive,
                       size: 22,
                     ),
                     Text(
@@ -46,7 +46,7 @@ class BuildExBottomNav extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
-                        color: i == currentIndex ? Colors.white : AppColors.textPrimary,
+                        color: i == currentIndex ? Colors.white : AppColors.navInactive,
                       ),
                     ),
                   ],

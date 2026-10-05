@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/widgets/app_bar.dart';
 
-// Owner: Divya. Figma: Splash Screen (first frame, right tree top).
+// Owner: Krisha. Figma: Splash Screen (first frame, right tree top).
 class SplashScreen extends StatelessWidget {
   static const route = '/';
   const SplashScreen({super.key});

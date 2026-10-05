@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/widgets/app_bar.dart';
 
-// Owner: M2. Figma: Daily Progress.
+// Owner: Jainil. Figma: Daily Progress.
 class DailyProgressScreen extends StatelessWidget {
   static const route = '/daily-progress';
   const DailyProgressScreen({super.key});

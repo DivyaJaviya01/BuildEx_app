@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../core/widgets/app_bar.dart';
 
-// Owner: Krisha. Figma: Phase Checklist.
+// Owner: Jainil. Figma: "Daily progress.png" = Today's Tasks & Checklist
+// (progress summary card + phase task rows + Save Checklist).
 class PhaseChecklistScreen extends StatelessWidget {
   static const route = '/checklist';
   const PhaseChecklistScreen({super.key});

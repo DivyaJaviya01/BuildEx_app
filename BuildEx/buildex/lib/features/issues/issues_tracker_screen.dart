@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/widgets/app_bar.dart';
 
-// Owner: Krisha. Figma: Issues & Defects Tracker.
+// Owner: Divya. Figma: Issues & Defects Tracker.
 class IssuesTrackerScreen extends StatelessWidget {
   static const route = '/issues';
   const IssuesTrackerScreen({super.key});

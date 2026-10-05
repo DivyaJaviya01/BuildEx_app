@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/widgets/app_bar.dart';
 
-// Owner: Krisha. Figma: Report Issue / Defect.
+// Owner: Jainil. Figma: Report Issue / Defect.
 class ReportIssueScreen extends StatelessWidget {
   static const route = '/report-issue';
   const ReportIssueScreen({super.key});

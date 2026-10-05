@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/widgets/app_bar.dart';
 
-// Owner: M2. Figma: Daily Reports History.
+// Owner: Divya. Figma: Daily Reports History.
 class DailyReportsHistoryScreen extends StatelessWidget {
   static const route = '/reports-history';
   const DailyReportsHistoryScreen({super.key});

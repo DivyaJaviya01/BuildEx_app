@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/widgets/app_bar.dart';
 
-// Owner: M2. Figma: Record Stock Delivery.
+// Owner: Divya. Figma: Record Stock Delivery.
 class RecordDeliveryScreen extends StatelessWidget {
   static const route = '/stock/record';
   const RecordDeliveryScreen({super.key});

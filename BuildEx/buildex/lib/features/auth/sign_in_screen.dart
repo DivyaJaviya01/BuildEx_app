@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/widgets/app_bar.dart';
 
-// Owner: Divya. Figma: Sign In.
+// Owner: Krisha. Figma: Sign In.
 class SignInScreen extends StatelessWidget {
   static const route = '/sign-in';
   const SignInScreen({super.key});

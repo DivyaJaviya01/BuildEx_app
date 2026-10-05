@@ -17,6 +17,35 @@ class MockData {
     {'name': 'Cement', 'qty': '50 Bags'},
     {'name': 'Coarse Sand', 'qty': '200 CFT'},
   ];
+  static const projectProgress = [
+    {
+      'id': 'p1',
+      'name': 'Metro Line Phase 2A',
+      'location': 'Sector 62, Noida',
+      'badge': 'ACTIVE',
+      'report': 'Submitted (10:15 AM)',
+      'progress': 0.82,
+      'warning': false,
+    },
+    {
+      'id': 'p2',
+      'name': 'Downtown Commercial Hub',
+      'location': 'MG Road, Bengaluru',
+      'badge': 'ACTIVE',
+      'report': '',
+      'progress': 0.45,
+      'warning': false,
+    },
+    {
+      'id': 'p3',
+      'name': 'Riverside Apartments',
+      'location': 'Kochi',
+      'badge': 'ON HOLD',
+      'report': 'Awaiting Permits',
+      'progress': 0.0,
+      'warning': true,
+    },
+  ];
   static const tasks = [
     {'name': 'Concreting Pier 45', 'project': 'Metro Line Phase 2A', 'due': 'Today', 'status': 'IN PROGRESS', 'progress': 0.65},
     {'name': 'Rebar Binding Pier 46', 'project': 'Metro Line Phase 2A', 'due': 'Tomorrow', 'status': 'PENDING', 'progress': 0.0},

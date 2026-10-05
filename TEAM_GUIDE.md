@@ -27,18 +27,30 @@ Run with `flutter run` (no database needed now — all data is static mock).
 Shared — only Divya edits:
 `BuildEx/buildex/lib/app.dart`, `lib/core/**`, `lib/models/**`, `lib/data/mock_data.dart`, `pubspec.yaml`.
 
+Shared widgets (`lib/core/widgets/`, from Figma PNG analysis in `docs/figma_screens/`):
+`app_bar`, `bottom_nav_bar` (cream bg + teal pill, see `BottomNavBar.png`),
+`primary_button`, `status_badge`, `info_card`, `app_text_field`, `section_header`,
+`progress_ring`, `stat_card`, `filter_chips`, `segmented_chips`, `severity_chips`,
+`worker_tile`, `checklist_row`, `capture_box`, `alert_banner`, `hero_image_card`, `search_field`.
+
+Figma file → screen mapping (export names differ from screen titles):
+- `Progress Notes.png` = Daily Progress form (Jainil)
+- `Daily progress.png` = Today's Tasks & Checklist → `phase_checklist_screen.dart` (Jainil)
+- `Phase Progress.png` + `Phase Progress-1.png` = same screen, `-1` variant shows BottomNav (single route)
+- `My Project.png` = My Projects, `My task.png` = My Tasks (owner files keep plural names)
+
 | Who | Screens (Figma right-tree order) | Files (edit ONLY these) |
 |---|---|---|
-| Divya (M1 shell) | Splash Screen, Create Account, Sign In, My Projects, Add New Project, Project Hub, Project Dashboard, BottomNav shell | `features/splash/*`, `features/auth/*`, `features/projects/*`, `features/hub/*`, `features/dashboard/*` + shared above |
-| M2 daily flow | Daily Progress, Site Photos, Worker Attendance, Attendance History, Material Log, Material Stock Panel, Record Stock Delivery, Daily Report Summary, Daily Reports History, Daily Report Audit | `features/daily/*`, `features/photos/*`, `features/attendance/*`, `features/materials/*`, `features/stock/*`, `features/reports/*` |
-| Krisha shared/issues | Phase Checklist, Phase Progress, Report Issue, Issues Tracker, Issue Detail, My Tasks, Task Details, Add New Task, My Team, Invite Member, My Profile | `features/checklist/*`, `features/issues/*`, `features/tasks/*`, `features/team/*`, `features/profile/*` |
+| Divya (leader + shell) | My Projects, Add New Project, Project Dashboard, Phase Progress, Material Stock Panel, Record Stock Delivery, Issues Tracker, Issue Detail, Daily Reports History, Daily Report Audit (10) | `features/projects/*`, `features/dashboard/*`, `features/checklist/phase_progress_screen.dart`, `features/stock/*`, `features/issues/issues_tracker_screen.dart`, `features/issues/issue_detail_screen.dart`, `features/reports/daily_reports_history_screen.dart`, `features/reports/daily_report_audit_screen.dart` + shared (`app.dart`, `core/**`, `models/**`, `data/mock_data.dart`) |
+| Jainil (hub flow) | Project Hub + 8 children: Phase Checklist, Daily Progress, Site Photos, Worker Attendance, Attendance History, Material Log, Report Issue, Daily Report Summary (9) | `features/hub/*`, `features/checklist/phase_checklist_screen.dart`, `features/daily/*`, `features/photos/*`, `features/attendance/*`, `features/materials/*`, `features/issues/report_issue_screen.dart`, `features/reports/daily_report_summary_screen.dart` |
+| Krisha (entry + shared) | Splash Screen, Create Account, Sign In, My Tasks, Task Details, Add New Task, My Team, Invite Member, My Profile (9) | `features/splash/*`, `features/auth/*`, `features/tasks/*`, `features/team/*`, `features/profile/*` |
 
 Full file map is in section 7. One file = one screen. Never edit another member's file.
 
 DB design split (TCIE-II, design only — no wiring):
-- Divya: `users`, `projects` + ER consolidation. Source: `system_design/04_class_diagram_database.md:120`
-- M2: `daily_logs`, `daily_attendance`, `daily_material_usages`, `material_stock`
-- Krisha: `phases`, `sub_phases`, `site_issues`
+- Divya: `projects`, `material_stock`, `site_issues` + ER consolidation. Source: `system_design/04_class_diagram_database.md:120`
+- Jainil: `daily_logs`, `daily_attendance`, `daily_material_usages`, `phases`, `sub_phases`
+- Krisha: `users` (auth flow)
 
 Models in `lib/models/` already mirror these tables with `fromJson`/`toJson` stubs. Keep everything static via `lib/data/mock_data.dart`.
 
@@ -51,7 +63,7 @@ git pull origin main
 
 # 2. one branch per screen
 git checkout -b <yourname>-<screen>
-# examples: divya-splash, krisha-tasks, m2-attendance
+# examples: divya-projects, jainil-hub, krisha-splash
 
 # 3. edit ONLY your file, add ONLY that file
 git add BuildEx/buildex/lib/features/tasks/my_tasks_screen.dart
@@ -65,11 +77,17 @@ Why no conflicts: each person touches different files. Never run `git add .`. Al
 
 ## 4. Rules (strict)
 
+FORM RULES (faculty pattern — viva will probe these):
+- Forms use `GlobalKey<FormState>` + `AppTextField(validator: ...)` + `_formKey.currentState!.validate()` (see `demo_app_NV/lib/loginscreen.dart:46`)
+- Every `TextEditingController` is created in `State` and released in `dispose()` (`demo_app_NV/lib/loginscreen.dart:97`)
+- Date fields use `AppDateField` (has the `mounted` check after `showDatePicker` built in)
+- Dropdowns use `AppDropdown` (faculty `DropdownButton` pattern, `demo_app_NV/lib/registration.dart:118`)
+
 DO:
 - 1 screen = 1 branch = 1 commit = 1 push (equal history)
 - `git pull` before starting work every day
 - `git add <your file>` — never `git add .`
-- Branch names: `divya-*`, `krisha-*`, `m2-*`
+- Branch names: `divya-*`, `jainil-*`, `krisha-*`
 - Static mock data only. No Firebase/REST wiring yet (TSEE does that)
 - Match Figma exactly (390px base, teal `#20AEB5` + yellow `#FFC800`, Inter font). Tokens: `docs/Design.md:81`, `docs/Design.md:135`
 
@@ -96,7 +114,29 @@ Each member needs 8–11 commits + PRs (one per screen) before TCIE-II.
 3. Keep both parts, save, `git add <file>`, `git commit -m "Resolve merge"`, `git push`
 4. Ask in the group if stuck.
 
-## 7. File map (do not create duplicates)
+## 7. Push / pull rules (avoid conflicts later)
+
+Golden sequence before every push:
+
+```bash
+git checkout <your-branch>
+git add <your file>                  # never git add .
+git commit -m "feat(<area>): <what> UI"
+git fetch origin                     # check what moved on remote
+git log --oneline main..origin/main  # read-only: commits you don't have yet
+git pull --rebase origin main        # replay your work on top, no merge commits
+git push -u origin <your-branch>     # first time; afterwards plain git push
+```
+
+Rules:
+- `main` moves only via PR on GitHub (1 review, Divya merges). Direct `git push origin main` is for Divya's setup commits only.
+- NEVER `git push --force` / `--force-with-lease`. If push is rejected (non-fast-forward), someone else landed first: `git fetch` + `git pull --rebase origin main`, resolve, push again.
+- Uncommitted work blocks rebase: `git stash push -m "wip" -- <path>`, pull, `git stash pop`.
+- Pull `main` into your branch at least once before opening a PR.
+- If a PR shows conflicts: resolve in YOUR branch (`git pull origin main`, fix files, `git add`, `git commit -m "Resolve merge"`, `git push`), never on `main`.
+- `.idea/`, `.dart_tool/`, `build/`, platform folders are git-ignored: if Android Studio offers "Add Files to Git" for them, always Cancel/untick.
+
+## 8. File map (do not create duplicates)
 
 ```
 BuildEx/buildex/lib/
@@ -106,28 +146,28 @@ BuildEx/buildex/lib/
   core/widgets/app_bar.dart, primary_button.dart, status_badge.dart, info_card.dart
   models/user.dart, project.dart, phase.dart, daily_log.dart, attendance.dart, material.dart, issue.dart
   data/mock_data.dart
-  features/splash/splash_screen.dart              (Divya)
-  features/auth/create_account_screen.dart        (Divya)
-  features/auth/sign_in_screen.dart               (Divya)
+  features/splash/splash_screen.dart              (Krisha)
+  features/auth/create_account_screen.dart        (Krisha)
+  features/auth/sign_in_screen.dart               (Krisha)
   features/projects/my_projects_screen.dart       (Divya)
   features/projects/add_project_screen.dart       (Divya)
-  features/hub/project_hub_screen.dart            (Divya)
+  features/hub/project_hub_screen.dart            (Jainil)
   features/dashboard/project_dashboard_screen.dart (Divya)
-  features/daily/daily_progress_screen.dart       (M2)
-  features/photos/site_photos_screen.dart         (M2)
-  features/attendance/worker_attendance_screen.dart (M2)
-  features/attendance/attendance_history_screen.dart (M2)
-  features/materials/material_log_screen.dart     (M2)
-  features/stock/material_stock_screen.dart       (M2)
-  features/stock/record_delivery_screen.dart      (M2)
-  features/reports/daily_report_summary_screen.dart (M2)
-  features/reports/daily_reports_history_screen.dart (M2)
-  features/reports/daily_report_audit_screen.dart (M2)
-  features/checklist/phase_checklist_screen.dart  (Krisha)
-  features/checklist/phase_progress_screen.dart   (Krisha)
-  features/issues/report_issue_screen.dart        (Krisha)
-  features/issues/issues_tracker_screen.dart      (Krisha)
-  features/issues/issue_detail_screen.dart         (Krisha)
+  features/daily/daily_progress_screen.dart       (Jainil)
+  features/photos/site_photos_screen.dart         (Jainil)
+  features/attendance/worker_attendance_screen.dart (Jainil)
+  features/attendance/attendance_history_screen.dart (Jainil)
+  features/materials/material_log_screen.dart     (Jainil)
+  features/stock/material_stock_screen.dart       (Divya)
+  features/stock/record_delivery_screen.dart      (Divya)
+  features/reports/daily_report_summary_screen.dart (Jainil)
+  features/reports/daily_reports_history_screen.dart (Divya)
+  features/reports/daily_report_audit_screen.dart (Divya)
+  features/checklist/phase_checklist_screen.dart  (Jainil)
+  features/checklist/phase_progress_screen.dart   (Divya)
+  features/issues/report_issue_screen.dart        (Jainil)
+  features/issues/issues_tracker_screen.dart      (Divya)
+  features/issues/issue_detail_screen.dart         (Divya)
   features/tasks/my_tasks_screen.dart             (Krisha)
   features/tasks/task_detail_screen.dart          (Krisha)
   features/tasks/add_task_screen.dart             (Krisha)

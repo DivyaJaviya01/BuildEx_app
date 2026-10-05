@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/widgets/app_bar.dart';
 
-// Owner: M2. Figma: Daily Report Summary.
+// Owner: Jainil. Figma: Daily Report Summary.
 class DailyReportSummaryScreen extends StatelessWidget {
   static const route = '/report-summary';
   const DailyReportSummaryScreen({super.key});

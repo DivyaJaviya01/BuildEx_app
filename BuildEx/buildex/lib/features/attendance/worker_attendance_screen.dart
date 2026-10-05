@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/widgets/app_bar.dart';
 
-// Owner: M2. Figma: Worker Attendance.
+// Owner: Jainil. Figma: Worker Attendance.
 class WorkerAttendanceScreen extends StatelessWidget {
   static const route = '/attendance';
   const WorkerAttendanceScreen({super.key});
