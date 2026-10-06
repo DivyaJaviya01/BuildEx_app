@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/widgets/app_bar.dart';
+import '../../resources/widgets/app_bar.dart';
 
 // Owner: Krisha. Figma: Splash Screen (first frame, right tree top).
 class SplashScreen extends StatelessWidget {

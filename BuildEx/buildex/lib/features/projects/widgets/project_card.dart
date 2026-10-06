@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../core/theme/app_colors.dart';
-import '../../../core/widgets/status_badge.dart';
+import '../../../resources/theme/app_colors.dart';
+import '../../../resources/widgets/status_badge.dart';
 
 // Page-private: project card (My Projects only).
-// Promote to core/widgets only if a second screen reuses it.
+// Promote to resources/widgets only if a second screen reuses it.
 class ProjectCard extends StatelessWidget {
   final String name;
   final String location;

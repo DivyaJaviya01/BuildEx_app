@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'core/theme/app_colors.dart';
-import 'core/theme/app_text.dart';
+import 'resources/theme/app_colors.dart';
+import 'resources/theme/app_text.dart';
 import 'features/splash/splash_screen.dart';
 import 'features/auth/sign_in_screen.dart';
 import 'features/auth/create_account_screen.dart';

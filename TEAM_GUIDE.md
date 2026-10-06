@@ -3,7 +3,7 @@
 For Divya (leader), Krisha, Teammate-3 (confirm: Jainil or Dipali — rename branches accordingly).
 Same workflow as TransitOps. UI-only for TCIE-II. No backend wiring until TSEE.
 
-`main` always has the latest shared files (`app.dart`, `core/theme/*`, `core/widgets/*`).
+`main` always has the latest shared files (`app.dart`, `resources/theme/*`, `resources/widgets/*`).
 Start every task from `main`.
 
 Build order follows the Figma hierarchy on the right, starting from `Splash Screen`.
@@ -25,9 +25,9 @@ Run with `flutter run` (no database needed now — all data is static mock).
 ## 2. Folder ownership (edit ONLY your files)
 
 Shared — only Divya edits:
-`BuildEx/buildex/lib/app.dart`, `lib/core/**`, `lib/models/**`, `lib/data/mock_data.dart`, `pubspec.yaml`.
+`BuildEx/buildex/lib/app.dart`, `lib/resources/**`, `lib/models/**`, `lib/data/mock_data.dart`, `pubspec.yaml`.
 
-Shared widgets (`lib/core/widgets/`, from Figma PNG analysis in `docs/figma_screens/`):
+Shared widgets (`lib/resources/widgets/`, from Figma PNG analysis in `docs/figma_screens/`):
 `app_bar`, `bottom_nav_bar` (cream bg + teal pill, see `BottomNavBar.png`),
 `primary_button`, `status_badge`, `info_card`, `app_text_field`, `section_header`,
 `progress_ring`, `stat_card`, `filter_chips`, `segmented_chips`, `severity_chips`,
@@ -41,7 +41,7 @@ Figma file → screen mapping (export names differ from screen titles):
 
 | Who | Screens (Figma right-tree order) | Files (edit ONLY these) |
 |---|---|---|
-| Divya (leader + shell) | My Projects, Add New Project, Project Dashboard, Phase Progress, Material Stock Panel, Record Stock Delivery, Issues Tracker, Issue Detail, Daily Reports History, Daily Report Audit (10) | `features/projects/*`, `features/dashboard/*`, `features/checklist/phase_progress_screen.dart`, `features/stock/*`, `features/issues/issues_tracker_screen.dart`, `features/issues/issue_detail_screen.dart`, `features/reports/daily_reports_history_screen.dart`, `features/reports/daily_report_audit_screen.dart` + shared (`app.dart`, `core/**`, `models/**`, `data/mock_data.dart`) |
+| Divya (leader + shell) | My Projects, Add New Project, Project Dashboard, Phase Progress, Material Stock Panel, Record Stock Delivery, Issues Tracker, Issue Detail, Daily Reports History, Daily Report Audit (10) | `features/projects/*`, `features/dashboard/*`, `features/checklist/phase_progress_screen.dart`, `features/stock/*`, `features/issues/issues_tracker_screen.dart`, `features/issues/issue_detail_screen.dart`, `features/reports/daily_reports_history_screen.dart`, `features/reports/daily_report_audit_screen.dart` + shared (`app.dart`, `resources/**`, `models/**`, `data/mock_data.dart`) |
 | Jainil (hub flow) | Project Hub + 8 children: Phase Checklist, Daily Progress, Site Photos, Worker Attendance, Attendance History, Material Log, Report Issue, Daily Report Summary (9) | `features/hub/*`, `features/checklist/phase_checklist_screen.dart`, `features/daily/*`, `features/photos/*`, `features/attendance/*`, `features/materials/*`, `features/issues/report_issue_screen.dart`, `features/reports/daily_report_summary_screen.dart` |
 | Krisha (entry + shared) | Splash Screen, Create Account, Sign In, My Tasks, Task Details, Add New Task, My Team, Invite Member, My Profile (9) | `features/splash/*`, `features/auth/*`, `features/tasks/*`, `features/team/*`, `features/profile/*` |
 
@@ -136,14 +136,40 @@ Rules:
 - If a PR shows conflicts: resolve in YOUR branch (`git pull origin main`, fix files, `git add`, `git commit -m "Resolve merge"`, `git push`), never on `main`.
 - `.idea/`, `.dart_tool/`, `build/`, platform folders are git-ignored: if Android Studio offers "Add Files to Git" for them, always Cancel/untick.
 
-## 8. File map (do not create duplicates)
+## 8. How we work: where pages and widgets go
+
+One screen end-to-end (example: Jainil builds Project Hub):
+
+1. Find your row in `MEMBER_TASKS.md` → PNG in `docs/figma_screens/` + stub file + route.
+2. Open the PNG, list its sections top-to-bottom on paper first.
+3. Open your stub (e.g. `features/hub/project_hub_screen.dart`). It already has the
+   route name, owner tag, and a TODO describing the Figma content. Replace the TODO
+   body with the real layout. Never rename the file or the route.
+4. Build ONLY from shared widgets (`lib/resources/widgets/`) + static data
+   (`lib/data/mock_data.dart`). If a piece isn't there, see widget rules below.
+5. `flutter run`, compare with the PNG side-by-side, tap everything.
+6. Branch → add → commit → push → PR (section 7 golden sequence).
+
+Where widgets live:
+- Need a widget for YOUR page only (e.g. hub grid card)? Create it in
+  `features/<page>/widgets/<name>.dart` (like `features/projects/widgets/project_card.dart`)
+  and import it from your screen. Nobody else touches that folder.
+- Need something a second screen also uses? Don't duplicate it: tell Divya in the
+  group, she moves (or approves) it to `lib/resources/widgets/` so all screens share one copy.
+- NEVER create the same widget twice under two features. NEVER edit `lib/resources/**`
+  unless you are Divya. NEVER add a new route yourself — routes live in `lib/app.dart`
+  (Divya only); your stub's route is already registered.
+- Models (`lib/models/`) and mock data are read-only for members. Need a new field?
+  Ask Divya; she updates the model + mock once for everyone.
+
+## 9. File map (do not create duplicates)
 
 ```
 BuildEx/buildex/lib/
   main.dart
   app.dart
-  core/theme/app_colors.dart, app_text.dart
-  core/widgets/app_bar.dart, primary_button.dart, status_badge.dart, info_card.dart
+  resources/theme/app_colors.dart, app_text.dart
+  resources/widgets/app_bar.dart, primary_button.dart, status_badge.dart, info_card.dart
   models/user.dart, project.dart, phase.dart, daily_log.dart, attendance.dart, material.dart, issue.dart
   data/mock_data.dart
   features/splash/splash_screen.dart              (Krisha)

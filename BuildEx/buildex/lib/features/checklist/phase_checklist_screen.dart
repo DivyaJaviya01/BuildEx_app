@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/widgets/app_bar.dart';
+import '../../resources/widgets/app_bar.dart';
 
 // Owner: Jainil. Figma: "Daily progress.png" = Today's Tasks & Checklist
 // (progress summary card + phase task rows + Save Checklist).

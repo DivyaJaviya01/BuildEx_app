@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../core/theme/app_colors.dart';
+import '../../../resources/theme/app_colors.dart';
 
 // Page-private: yellow/white quick-action card (New Project / Analytics).
 class QuickActionCard extends StatelessWidget {

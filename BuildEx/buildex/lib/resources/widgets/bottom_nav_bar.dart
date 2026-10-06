@@ -9,8 +9,10 @@ class BuildExBottomNav extends StatelessWidget {
   final ValueChanged<int>? onTap;
   const BuildExBottomNav({super.key, this.currentIndex = 0, this.onTap});
 
+  // Figma truth (3/4 frames + BottomNavBar.png): Projects = image icon.
+  // My task.png uses a clipboard variant — Figma-side fix pending.
   static const _items = [
-    (Icons.folder_outlined, 'Projects'),
+    (Icons.image_outlined, 'Projects'),
     (Icons.checklist_outlined, 'Tasks'),
     (Icons.groups_outlined, 'Team'),
     (Icons.person_outline, 'Profile'),

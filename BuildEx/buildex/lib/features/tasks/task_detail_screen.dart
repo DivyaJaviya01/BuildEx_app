@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/widgets/app_bar.dart';
+import '../../resources/widgets/app_bar.dart';
 
 // Owner: Krisha. Figma: Task Details.
 class TaskDetailScreen extends StatelessWidget {

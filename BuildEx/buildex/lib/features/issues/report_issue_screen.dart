@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../core/widgets/app_bar.dart';
-import '../../core/widgets/app_text_field.dart';
-import '../../core/widgets/severity_chips.dart';
-import '../../core/widgets/capture_box.dart';
-import '../../core/theme/app_colors.dart';
+import '../../resources/widgets/app_bar.dart';
+import '../../resources/widgets/app_text_field.dart';
+import '../../resources/widgets/severity_chips.dart';
+import '../../resources/widgets/capture_box.dart';
+import '../../resources/theme/app_colors.dart';
 
 // Owner: Jainil. Figma: Report Issue / Defect.
 class ReportIssueScreen extends StatefulWidget {

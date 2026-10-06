@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../core/widgets/app_bar.dart';
-import '../../core/widgets/status_badge.dart';
-import '../../core/widgets/info_card.dart';
-import '../../core/widgets/hero_image_card.dart';
-import '../../core/widgets/primary_button.dart';
-import '../../core/theme/app_colors.dart';
+import '../../resources/widgets/app_bar.dart';
+import '../../resources/widgets/status_badge.dart';
+import '../../resources/widgets/info_card.dart';
+import '../../resources/widgets/hero_image_card.dart';
+import '../../resources/widgets/primary_button.dart';
+import '../../resources/theme/app_colors.dart';
 
 // Owner: Jainil. Figma: Project Hub (contractor action grid + SUBMIT DAILY REPORT).
 class ProjectHubScreen extends StatelessWidget {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../core/widgets/app_bar.dart';
-import '../../core/widgets/stat_card.dart';
-import '../../core/widgets/section_header.dart';
-import '../../core/widgets/worker_tile.dart';
-import '../../core/widgets/primary_button.dart';
-import '../../core/theme/app_colors.dart';
+import '../../resources/widgets/app_bar.dart';
+import '../../resources/widgets/stat_card.dart';
+import '../../resources/widgets/section_header.dart';
+import '../../resources/widgets/worker_tile.dart';
+import '../../resources/widgets/primary_button.dart';
+import '../../resources/theme/app_colors.dart';
 import '../../data/mock_data.dart';
 
 // Owner: Jainil. Figma: Attendance History.

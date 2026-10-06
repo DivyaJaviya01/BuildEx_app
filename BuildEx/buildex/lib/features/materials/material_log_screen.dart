@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/widgets/app_bar.dart';
+import '../../resources/widgets/app_bar.dart';
 
 // Owner: Jainil. Figma: Material Log.
 class MaterialLogScreen extends StatelessWidget {

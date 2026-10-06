@@ -56,7 +56,7 @@ Widgets to use: `SegmentedStatus`, `SeverityChips`, `CaptureBox`, `WorkerTile`, 
 | D9 | `Daily Reports History.png` | `/reports-history` | `BuildEx/buildex/lib/features/reports/daily_reports_history_screen.dart` | ☐ |
 | D10 | `Daily Report Audit.png` | `/report-audit` | `BuildEx/buildex/lib/features/reports/daily_report_audit_screen.dart` | ☐ |
 
-Plus shared (only Divya): `lib/app.dart`, `lib/core/**`, `lib/models/**`, `lib/data/mock_data.dart`.
+Plus shared (only Divya): `lib/app.dart`, `lib/resources/**`, `lib/models/**`, `lib/data/mock_data.dart`.
 DB design: `projects`, `material_stock`, `site_issues` + ER consolidation.
 Widgets to use: `ProgressRing`, `FilterChips`, `AppDropdown`, `AppDateField`, `AlertBanner`, `HeroImageCard`.
 
@@ -75,6 +75,6 @@ git push -u origin <name>-<screen>
 ```
 
 Screen recipe: open your PNG in `docs/figma_screens/` → copy section order + texts →
-compose with shared widgets from `lib/core/widgets/` → static data from
+compose with shared widgets from `lib/resources/widgets/` → static data from
 `lib/data/mock_data.dart` → match 390px, teal + yellow, Inter.
 Forms: `GlobalKey<FormState>` + `AppTextField(validator:)` + `dispose()` controllers.

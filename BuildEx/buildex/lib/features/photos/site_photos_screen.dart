@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../core/widgets/app_bar.dart';
-import '../../core/widgets/capture_box.dart';
-import '../../core/widgets/section_header.dart';
-import '../../core/widgets/primary_button.dart';
-import '../../core/theme/app_colors.dart';
+import '../../resources/widgets/app_bar.dart';
+import '../../resources/widgets/capture_box.dart';
+import '../../resources/widgets/section_header.dart';
+import '../../resources/widgets/primary_button.dart';
+import '../../resources/theme/app_colors.dart';
 
 // Owner: Jainil. Figma: Site Photos.
 class SitePhotosScreen extends StatelessWidget {
