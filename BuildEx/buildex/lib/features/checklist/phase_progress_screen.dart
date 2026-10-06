@@ -54,10 +54,10 @@ class PhaseProgressScreen extends StatelessWidget {
           for (final p in _phases)
             PhaseProgressRow(
               name: p.$1,
-              progress: (p.$2 as num).toDouble(),
-              status: p.$3 as String,
-              color: p.$4 as Color,
-              selected: p.$5 as bool,
+              progress: p.$2.toDouble(),
+              status: p.$3,
+              color: p.$4,
+              selected: p.$5,
             ),
         ],
       ),
