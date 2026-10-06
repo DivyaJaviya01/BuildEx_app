@@ -1,21 +1,21 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// Smoke test: app boots → SplashScreen shows BuildEx branding.
+// Run: flutter test
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:buildex/app.dart';
+import 'package:buildex/features/splash/splash_screen.dart';
 
 void main() {
-  testWidgets('App builds without crashing', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('App launches to Splash Screen', (WidgetTester tester) async {
     await tester.pumpWidget(const BuildExApp());
+    await tester.pumpAndSettle();
 
-    // Expect the app to build successfully
-    expect(find.byType(MaterialApp), findsOneWidget);
+    // SplashScreen route renders
+    expect(find.byType(SplashScreen), findsOneWidget);
+
+    // Branding present
+    expect(find.text('BUILDEX'), findsOneWidget);
   });
 }

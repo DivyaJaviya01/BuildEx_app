@@ -49,8 +49,7 @@ class BuildExApp extends StatelessWidget {
         ),
         textTheme: AppText.theme,
       ),
-      // DEV: entry at Divya's D1 while pages are built. Krisha's splash stays '/'.
-      initialRoute: MyProjectsScreen.route,
+      initialRoute: SplashScreen.route,
       routes: {
         SplashScreen.route: (_) => const SplashScreen(),
         CreateAccountScreen.route: (_) => const CreateAccountScreen(),
