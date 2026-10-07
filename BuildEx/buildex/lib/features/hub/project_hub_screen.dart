@@ -186,6 +186,7 @@ class ProjectHubScreen extends StatelessWidget {
               onPressed: () => Navigator.pushNamed(context, DailyReportSummaryScreen.route),
             ),
             const SizedBox(height: 30),
+            )
           ],
         ),
       ),
