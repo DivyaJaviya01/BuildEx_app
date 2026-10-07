@@ -96,6 +96,7 @@ class ProjectHubScreen extends StatelessWidget {
                 ],
               ),
             ),
+            ),
             const SizedBox(height: 16),
 
             // Grid
@@ -186,7 +187,7 @@ class ProjectHubScreen extends StatelessWidget {
               onPressed: () => Navigator.pushNamed(context, DailyReportSummaryScreen.route),
             ),
             const SizedBox(height: 30),
-          ],
+            ],
         ),
       ),
     );
