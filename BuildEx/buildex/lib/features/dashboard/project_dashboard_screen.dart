@@ -108,7 +108,6 @@ class ProjectDashboardScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
       bottomNavigationBar: const BuildExBottomNav(currentIndex: 0),
     );
   }
