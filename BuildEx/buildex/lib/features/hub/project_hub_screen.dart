@@ -11,6 +11,7 @@ import '../attendance/worker_attendance_screen.dart';
 import '../materials/material_log_screen.dart';
 import '../issues/report_issue_screen.dart';
 import '../reports/daily_report_summary_screen.dart';
+import '../checklist/phase_checklist_screen.dart';
 
 // Owner: Jainil. Figma: Project Hub (contractor action grid + SUBMIT DAILY REPORT).
 class ProjectHubScreen extends StatelessWidget {
@@ -49,11 +50,14 @@ class ProjectHubScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // Progress Card
+            // Progress Card → opens the day's task checklist
             InfoCard(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+              child: InkWell(
+                onTap: () =>
+                    Navigator.pushNamed(context, PhaseChecklistScreen.route),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
