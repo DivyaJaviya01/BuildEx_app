@@ -40,7 +40,10 @@ class _DailyProgressScreenState extends State<DailyProgressScreen> {
 
   void _saveNotes() {
     if (_formKey.currentState!.validate()) {
-      // TODO: Save logic
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Notes saved successfully!'), duration: Duration(seconds: 2)),
+      );
+      Navigator.pop(context);
     }
   }
 
@@ -57,7 +60,11 @@ class _DailyProgressScreenState extends State<DailyProgressScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_none),
-            onPressed: () {},
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Notifications coming soon!')),
+              );
+            },
           ),
         ],
       ),

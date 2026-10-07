@@ -126,26 +126,33 @@ class DailyReportAuditScreen extends StatelessWidget {
                   child: Container(
                     height: 90,
                     margin: EdgeInsets.only(right: i == 2 ? 0 : 8),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
+                    child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        const Icon(Icons.broken_image_outlined, color: Colors.grey),
-                        if (i == 0)
-                          Positioned(
-                            bottom: 6,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                              decoration: BoxDecoration(
-                                  color: Colors.black54, borderRadius: BorderRadius.circular(5)),
-                              child: const Text('Defect',
-                                  style: TextStyle(color: Colors.white, fontSize: 11)),
-                            ),
+                      child: Stack(
+                        fit: StackFit.expand,
+                        alignment: Alignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/photo_audit${i + 1}.jpg',
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, _, _) =>
+                                Container(color: Colors.grey[300]),
                           ),
-                      ],
+                          if (i == 0)
+                            Positioned(
+                              bottom: 6,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 2),
+                                decoration: BoxDecoration(
+                                    color: Colors.black54,
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: const Text('Defect',
+                                    style: TextStyle(color: Colors.white, fontSize: 11)),
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

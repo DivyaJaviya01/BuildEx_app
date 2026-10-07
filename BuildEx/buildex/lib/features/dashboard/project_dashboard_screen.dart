@@ -21,7 +21,16 @@ class ProjectDashboardScreen extends StatelessWidget {
     return Scaffold(
       appBar: BuildExAppBar(
         title: 'Metro Line Phase 2A',
-        actions: [IconButton(icon: const Icon(Icons.notifications_none), onPressed: () {})],
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications_none),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Notifications coming soon!')),
+              );
+            },
+          ),
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
@@ -61,43 +70,44 @@ class ProjectDashboardScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 12),
-          const Row(
-            children: [
-              MiniStatCard(
-                label: 'SPENT TODAY',
-                value: '\$1,250',
-                note: '83% of daily cap',
-                accent: AppColors.primary,
-              ),
-              SizedBox(width: 12),
-              MiniStatCard(
-                label: 'TOTAL COST',
-                value: '\$325,400',
-                note: '65% of total budget',
-                accent: AppColors.accent,
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          const InfoCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            const SizedBox(height: 12),
+            const Row(
               children: [
-                Text('DAILY SUMMARY', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14)),
-                SummaryRow(title: 'Daily Progress', subtitle: 'Completed', done: true),
-                SummaryRow(title: 'Worker Attendance', subtitle: '10 / 12 Present', done: true),
-                SummaryRow(title: 'Material Log', subtitle: '50 Bags Cement used', done: true),
-                SummaryRow(title: 'Open Issues', subtitle: '1 Critical Defect', alert: true),
+                MiniStatCard(
+                  label: 'SPENT TODAY',
+                  value: '\$1,250',
+                  note: '83% of daily cap',
+                  accent: AppColors.primary,
+                ),
+                SizedBox(width: 12),
+                MiniStatCard(
+                  label: 'TOTAL COST',
+                  value: '\$325,400',
+                  note: '65% of total budget',
+                  accent: AppColors.accent,
+                ),
               ],
             ),
-          ),
-          const SizedBox(height: 12),
-          PrimaryButton(
-            label: 'VIEW DAILY REPORT DETAILS',
-            onPressed: () => Navigator.pushNamed(context, DailyReportAuditScreen.route),
-          ),
-        ],
+            const SizedBox(height: 12),
+            const InfoCard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('DAILY SUMMARY', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14)),
+                  SummaryRow(title: 'Daily Progress', subtitle: 'Completed', done: true),
+                  SummaryRow(title: 'Worker Attendance', subtitle: '10 / 12 Present', done: true),
+                  SummaryRow(title: 'Material Log', subtitle: '50 Bags Cement used', done: true),
+                  SummaryRow(title: 'Open Issues', subtitle: '1 Critical Defect', alert: true),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+            PrimaryButton(
+              label: 'VIEW DAILY REPORT DETAILS',
+              onPressed: () => Navigator.pushNamed(context, DailyReportAuditScreen.route),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: const BuildExBottomNav(currentIndex: 0),
     );

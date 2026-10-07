@@ -14,7 +14,7 @@ class SectionHeader extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(title, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
-        if (action case final a?) a,
+        action ?? const SizedBox.shrink(),
       ],
     );
   }

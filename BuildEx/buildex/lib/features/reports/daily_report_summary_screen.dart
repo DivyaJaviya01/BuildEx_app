@@ -543,7 +543,7 @@ class DailyReportSummaryScreen extends StatelessWidget {
                             height: 100,
                             width: double.infinity,
                             fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) =>
+                            errorBuilder: (_, _, _) =>
                                 Container(height: 100, color: Colors.grey[300]),
                           ),
                           Positioned(
@@ -582,7 +582,7 @@ class DailyReportSummaryScreen extends StatelessWidget {
                             height: 100,
                             width: double.infinity,
                             fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) =>
+                            errorBuilder: (_, _, _) =>
                                 Container(height: 100, color: Colors.grey[300]),
                           ),
                           Positioned(

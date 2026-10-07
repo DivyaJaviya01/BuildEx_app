@@ -5,6 +5,12 @@ import '../../resources/widgets/info_card.dart';
 import '../../resources/widgets/hero_image_card.dart';
 import '../../resources/widgets/primary_button.dart';
 import '../../resources/theme/app_colors.dart';
+import '../daily/daily_progress_screen.dart';
+import '../photos/site_photos_screen.dart';
+import '../attendance/worker_attendance_screen.dart';
+import '../materials/material_log_screen.dart';
+import '../issues/report_issue_screen.dart';
+import '../reports/daily_report_summary_screen.dart';
 
 // Owner: Jainil. Figma: Project Hub (contractor action grid + SUBMIT DAILY REPORT).
 class ProjectHubScreen extends StatelessWidget {
@@ -74,21 +80,14 @@ class ProjectHubScreen extends StatelessWidget {
                     child: LinearProgressIndicator(
                       value: 0.65,
                       minHeight: 8,
-                      backgroundColor: AppColors.primary.withValues(
-                        alpha: 0.15,
-                      ),
-                      valueColor: const AlwaysStoppedAnimation(
-                        AppColors.primary,
-                      ),
+                      backgroundColor: AppColors.primary.withValues(alpha: 0.15),
+                      valueColor: const AlwaysStoppedAnimation(AppColors.primary),
                     ),
                   ),
                   const SizedBox(height: 12),
                   const Text(
                     '2 steps remaining for completion today.',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: AppColors.textSecondary,
-                    ),
+                    style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
                   ),
                 ],
               ),
@@ -104,21 +103,25 @@ class ProjectHubScreen extends StatelessWidget {
               crossAxisSpacing: 12,
               childAspectRatio: 1.3,
               children: [
-                _buildActionCard(Icons.edit_document, 'Progress Notes', () {}),
+                _buildActionCard(
+                  Icons.edit_document,
+                  'Progress Notes',
+                  () => Navigator.pushNamed(context, DailyProgressScreen.route),
+                ),
                 _buildActionCard(
                   Icons.camera_alt_outlined,
                   'Site Photos',
-                  () {},
+                  () => Navigator.pushNamed(context, SitePhotosScreen.route),
                 ),
                 _buildActionCard(
                   Icons.person_outline,
                   'Labor Attendance',
-                  () {},
+                  () => Navigator.pushNamed(context, WorkerAttendanceScreen.route),
                 ),
                 _buildActionCard(
                   Icons.inventory_2_outlined,
                   'Material Log',
-                  () {},
+                  () => Navigator.pushNamed(context, MaterialLogScreen.route),
                 ),
               ],
             ),
@@ -127,7 +130,7 @@ class ProjectHubScreen extends StatelessWidget {
             // Issue Card
             InfoCard(
               child: InkWell(
-                onTap: () {},
+                onTap: () => Navigator.pushNamed(context, ReportIssueScreen.route),
                 child: const Row(
                   children: [
                     Icon(
@@ -174,7 +177,10 @@ class ProjectHubScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Primary Button
-            PrimaryButton(label: 'SUBMIT DAILY REPORT', onPressed: () {}),
+            PrimaryButton(
+              label: 'SUBMIT DAILY REPORT',
+              onPressed: () => Navigator.pushNamed(context, DailyReportSummaryScreen.route),
+            ),
             const SizedBox(height: 30),
           ],
         ),

@@ -6,9 +6,70 @@ import '../../resources/widgets/primary_button.dart';
 import '../../resources/theme/app_colors.dart';
 
 // Owner: Jainil. Figma: Site Photos.
-class SitePhotosScreen extends StatelessWidget {
+class SitePhotosScreen extends StatefulWidget {
   static const route = '/site-photos';
   const SitePhotosScreen({super.key});
+
+  @override
+  State<SitePhotosScreen> createState() => _SitePhotosScreenState();
+}
+
+class _SitePhotosScreenState extends State<SitePhotosScreen> {
+  final List<Map<String, String>> _photos = [
+    {'asset': 'assets/images/photo1.jpg', 'time': '10:24 AM'},
+    {'asset': 'assets/images/photo2.jpg', 'time': '11:15 AM'},
+    {'asset': 'assets/images/photo3.jpg', 'time': '01:45 PM'},
+    {'asset': 'assets/images/photo4.jpg', 'time': '03:30 PM'},
+  ];
+
+  void _showCaptureOptions() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Add Site Photo', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 16),
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: const Text('Take Photo'),
+              onTap: () {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Camera access coming soon!')),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: const Text('Choose from Gallery'),
+              onTap: () {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Gallery access coming soon!')),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _savePhotos() {
+    if (_photos.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No photos to save')),
+      );
+      return;
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Photos saved successfully!'), duration: Duration(seconds: 2)),
+    );
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +84,11 @@ class SitePhotosScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_none),
-            onPressed: () {},
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Notifications coming soon!')),
+              );
+            },
           ),
         ],
       ),
@@ -55,16 +120,16 @@ class SitePhotosScreen extends StatelessWidget {
             CaptureBox(
               title: 'Tap to Capture',
               subtitle: 'Add Site Photo',
-              onTap: () {},
+              onTap: _showCaptureOptions,
             ),
             const SizedBox(height: 24),
 
             // Recent Uploads
-            const SectionHeader(
+            SectionHeader(
               title: 'Recent Uploads',
               action: Text(
-                '4 Photos',
-                style: TextStyle(
+                '${_photos.length} Photos',
+                style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                   color: AppColors.primary,
@@ -80,12 +145,7 @@ class SitePhotosScreen extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               mainAxisSpacing: 12,
               crossAxisSpacing: 12,
-              children: [
-                _buildPhotoThumbnail('assets/images/photo1.jpg', '10:24 AM'),
-                _buildPhotoThumbnail('assets/images/photo2.jpg', '11:15 AM'),
-                _buildPhotoThumbnail('assets/images/photo3.jpg', '01:45 PM'),
-                _buildPhotoThumbnail('assets/images/photo4.jpg', '03:30 PM'),
-              ],
+              children: _photos.map((photo) => _buildPhotoThumbnail(photo['asset']!, photo['time']!)).toList(),
             ),
             const SizedBox(height: 24),
 
@@ -116,22 +176,16 @@ class SitePhotosScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  _buildGuideline(
-                    'Ensure adequate lighting for clear visibility.',
-                  ),
-                  _buildGuideline(
-                    'Capture specific equipment labels if applicable.',
-                  ),
-                  _buildGuideline(
-                    'Maintain a wide angle to show surrounding context.',
-                  ),
+                  _buildGuideline('Ensure adequate lighting for clear visibility.'),
+                  _buildGuideline('Capture specific equipment labels if applicable.'),
+                  _buildGuideline('Maintain a wide angle to show surrounding context.'),
                 ],
               ),
             ),
             const SizedBox(height: 24),
 
             // Save Button
-            PrimaryButton(label: 'SAVE PHOTOS', onPressed: () {}),
+            PrimaryButton(label: 'SAVE PHOTOS', onPressed: _savePhotos),
             const SizedBox(height: 30),
           ],
         ),

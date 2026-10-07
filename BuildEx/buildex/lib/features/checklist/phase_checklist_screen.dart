@@ -4,6 +4,8 @@ import '../../resources/widgets/checklist_row.dart';
 import '../../resources/widgets/primary_button.dart';
 import '../../resources/widgets/section_header.dart';
 import '../../resources/theme/app_colors.dart';
+import '../tasks/add_task_screen.dart';
+import 'phase_progress_screen.dart';
 
 // Owner: Jainil. Figma: "Daily progress.png" = Today's Tasks & Checklist
 class PhaseChecklistScreen extends StatefulWidget {
@@ -22,6 +24,13 @@ class _PhaseChecklistScreenState extends State<PhaseChecklistScreen> {
     {'title': 'Moisture Test', 'subtitle': 'Safety Compliance', 'checked': false},
   ];
 
+  void _showSaveConfirmation() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Checklist saved successfully!'), duration: Duration(seconds: 2)),
+    );
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +44,11 @@ class _PhaseChecklistScreenState extends State<PhaseChecklistScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_none),
-            onPressed: () {},
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Notifications coming soon!')),
+              );
+            },
           ),
         ],
       ),
@@ -70,12 +83,15 @@ class _PhaseChecklistScreenState extends State<PhaseChecklistScreen> {
                   const SizedBox(height: 12),
                   const Divider(),
                   const SizedBox(height: 4),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('View Overall Progress', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.primary)),
-                      Icon(Icons.chevron_right, color: AppColors.primary),
-                    ],
+                  InkWell(
+                    onTap: () => Navigator.pushNamed(context, PhaseProgressScreen.route),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('View Overall Progress', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.primary)),
+                        Icon(Icons.chevron_right, color: AppColors.primary),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -101,7 +117,7 @@ class _PhaseChecklistScreenState extends State<PhaseChecklistScreen> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: _tasks.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 12),
+              separatorBuilder: (_, _) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
                 final task = _tasks[index];
                 return ChecklistRow(
@@ -124,7 +140,7 @@ class _PhaseChecklistScreenState extends State<PhaseChecklistScreen> {
         backgroundColor: AppColors.accent,
         foregroundColor: AppColors.textPrimary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        onPressed: () {},
+        onPressed: () => Navigator.pushNamed(context, AddTaskScreen.route),
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: SafeArea(
@@ -132,7 +148,7 @@ class _PhaseChecklistScreenState extends State<PhaseChecklistScreen> {
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
           child: PrimaryButton(
             label: 'Save Checklist',
-            onPressed: () {},
+            onPressed: _showSaveConfirmation,
           ),
         ),
       ),

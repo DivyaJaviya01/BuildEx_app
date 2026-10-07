@@ -1,7 +1,6 @@
 // Smoke test: app boots → SplashScreen shows BuildEx branding.
 // Run: flutter test
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:buildex/app.dart';

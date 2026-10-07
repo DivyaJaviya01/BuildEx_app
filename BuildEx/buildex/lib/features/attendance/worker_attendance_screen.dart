@@ -34,6 +34,49 @@ class _WorkerAttendanceScreenState extends State<WorkerAttendanceScreen> {
   int get _present => _workers.where((w) => w['present'] == true).length;
   int get _absent => _total - _present;
 
+  void _saveAttendance() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Attendance saved successfully!'), duration: Duration(seconds: 2)),
+    );
+    Navigator.pop(context);
+  }
+
+  void _showFilter() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Filter Options', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 16),
+            ListTile(
+              leading: const Icon(Icons.person_outline),
+              title: const Text('All Workers'),
+              onTap: () => Navigator.pop(context),
+            ),
+            ListTile(
+              leading: const Icon(Icons.check_circle_outline, color: Colors.green),
+              title: const Text('Present Only'),
+              onTap: () => Navigator.pop(context),
+            ),
+            ListTile(
+              leading: const Icon(Icons.cancel_outlined, color: Colors.red),
+              title: const Text('Absent Only'),
+              onTap: () => Navigator.pop(context),
+            ),
+            ListTile(
+              leading: const Icon(Icons.badge_outlined),
+              title: const Text('By Role'),
+              onTap: () => Navigator.pop(context),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final filteredWorkers = _workers.where((w) {
@@ -54,7 +97,11 @@ class _WorkerAttendanceScreenState extends State<WorkerAttendanceScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_none),
-            onPressed: () {},
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Notifications coming soon!')),
+              );
+            },
           ),
         ],
       ),
@@ -132,21 +179,11 @@ class _WorkerAttendanceScreenState extends State<WorkerAttendanceScreen> {
             const SizedBox(height: 24),
 
             // Roll Call Header
-            const SectionHeader(
+            SectionHeader(
               title: 'Worker Roll Call',
-              action: Row(
-                children: [
-                  Icon(Icons.filter_list, size: 16, color: AppColors.primary),
-                  SizedBox(width: 4),
-                  Text(
-                    'Filter',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primary,
-                    ),
-                  ),
-                ],
+              action: IconButton(
+                icon: const Icon(Icons.filter_list, color: AppColors.primary),
+                onPressed: _showFilter,
               ),
             ),
             const SizedBox(height: 12),
@@ -179,7 +216,7 @@ class _WorkerAttendanceScreenState extends State<WorkerAttendanceScreen> {
             const SizedBox(height: 32),
 
             // Save Button
-            PrimaryButton(label: 'SAVE ATTENDANCE', onPressed: () {}),
+            PrimaryButton(label: 'SAVE ATTENDANCE', onPressed: _saveAttendance),
             const SizedBox(height: 30),
           ],
         ),

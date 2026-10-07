@@ -3,14 +3,20 @@ import '../../resources/widgets/app_bar.dart';
 import '../../resources/widgets/stat_card.dart';
 import '../../resources/widgets/section_header.dart';
 import '../../resources/widgets/worker_tile.dart';
-import '../../resources/widgets/primary_button.dart';
 import '../../resources/theme/app_colors.dart';
-import '../../data/mock_data.dart';
+import 'worker_attendance_screen.dart';
 
 // Owner: Jainil. Figma: Attendance History.
 class AttendanceHistoryScreen extends StatelessWidget {
   static const route = '/attendance/history';
   const AttendanceHistoryScreen({super.key});
+
+  static const _crew = [
+    {'name': 'Rajesh Kumar', 'role': 'Mason', 'present': true},
+    {'name': 'Vikram Singh', 'role': 'Helper', 'present': true},
+    {'name': 'Sunil Dutt', 'role': 'Carpenter', 'present': false},
+    {'name': 'Anil Sharma', 'role': 'Mason', 'present': true},
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +31,11 @@ class AttendanceHistoryScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.calendar_today_outlined),
-            onPressed: () {},
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Date picker coming soon!')),
+              );
+            },
           ),
         ],
       ),
@@ -46,42 +56,22 @@ class AttendanceHistoryScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Project',
-                        style: TextStyle(
-                          color: AppColors.textSecondary,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        'Metro Line Phase 2A',
-                        style: TextStyle(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                        ),
-                      ),
+                      Text('Project', style: TextStyle(color: AppColors.textSecondary, fontSize: 14)),
+                      Text('Metro Line Phase 2A',
+                          style: TextStyle(
+                              color: AppColors.primary, fontWeight: FontWeight.w600, fontSize: 14)),
                     ],
                   ),
                   SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Date',
-                        style: TextStyle(
-                          color: AppColors.textSecondary,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        'Thursday, July 23, 2026',
-                        style: TextStyle(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                        ),
-                      ),
+                      Text('Date', style: TextStyle(color: AppColors.textSecondary, fontSize: 14)),
+                      Text('Thursday, July 23, 2026',
+                          style: TextStyle(
+                              color: AppColors.textPrimary,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14)),
                     ],
                   ),
                 ],
@@ -106,11 +96,7 @@ class AttendanceHistoryScreen extends StatelessWidget {
             // Stats
             const StatTriple(
               stats: [
-                (
-                  label: 'Total Crew',
-                  value: '12',
-                  color: AppColors.textPrimary,
-                ),
+                (label: 'Total Crew', value: '12', color: AppColors.textPrimary),
                 (label: 'Present', value: '10', color: AppColors.success),
                 (label: 'Absent', value: '2', color: AppColors.danger),
               ],
@@ -120,10 +106,7 @@ class AttendanceHistoryScreen extends StatelessWidget {
             // Section Header
             const SectionHeader(
               title: 'Crew Attendance',
-              action: Text(
-                '4 Records',
-                style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
-              ),
+              action: Text('4 Records', style: TextStyle(fontSize: 13, color: AppColors.textSecondary)),
             ),
             const SizedBox(height: 12),
 
@@ -131,14 +114,13 @@ class AttendanceHistoryScreen extends StatelessWidget {
             ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: MockData.workers.length,
+              itemCount: _crew.length,
               separatorBuilder: (context, index) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
-                final w = MockData.workers[index];
-                final present = w['present'] as bool;
+                final present = _crew[index]['present'] as bool;
                 return WorkerTile(
-                  name: w['name'] as String,
-                  subtitle: w['role'] as String,
+                  name: _crew[index]['name'] as String,
+                  subtitle: _crew[index]['role'] as String,
                   badge: present ? 'PRESENT' : 'ABSENT',
                   badgeColor: present ? AppColors.success : AppColors.danger,
                 );
@@ -147,9 +129,21 @@ class AttendanceHistoryScreen extends StatelessWidget {
             const SizedBox(height: 32),
 
             // Edit Button
-            PrimaryButton(
-              label: "EDIT TODAY'S ATTENDANCE",
-              onPressed: () {},
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.accent,
+                  foregroundColor: AppColors.textPrimary,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                ),
+                onPressed: () =>
+                    Navigator.pushNamed(context, WorkerAttendanceScreen.route),
+                icon: const Icon(Icons.edit),
+                label: const Text("EDIT TODAY'S ATTENDANCE",
+                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+              ),
             ),
             const SizedBox(height: 30),
           ],
@@ -172,22 +166,15 @@ class AttendanceHistoryScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            day,
-            style: TextStyle(
-              fontSize: 12,
-              color: isActive ? Colors.white : AppColors.textSecondary,
-            ),
-          ),
+          Text(day,
+              style: TextStyle(
+                  fontSize: 12, color: isActive ? Colors.white : AppColors.textSecondary)),
           const SizedBox(height: 4),
-          Text(
-            date,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: isActive ? Colors.white : AppColors.textPrimary,
-            ),
-          ),
+          Text(date,
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: isActive ? Colors.white : AppColors.textPrimary)),
         ],
       ),
     );
